@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maxline Studios. | Premium Creative Agency</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <!-- Favicon Integration -->
+    <link rel="icon" href="favicon.png" type="image/png">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,15 +22,16 @@
             --primary: #7C3AED;
             --secondary: #A855F7;
             --gradient: linear-gradient(135deg, #7C3AED, #A855F7);
+            --gradient-subtle: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(168,85,247,0.05));
             --text-main: #FFFFFF;
             --text-muted: #888888;
             --success: #22C55E;
             
-            /* High-End Glass Effects */
-            --glass-bg: rgba(255, 255, 255, 0.02);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            /* High-End Glass Effects - Enhanced */
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --border-light: rgba(255, 255, 255, 0.05);
-            --btn-glass-bg: rgba(255, 255, 255, 0.03);
+            --btn-glass-bg: rgba(255, 255, 255, 0.04);
             
             /* Typography */
             --font-head: 'Manrope', sans-serif;
@@ -47,7 +51,7 @@
             --text-muted: #52525B;
             
             --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(0, 0, 0, 0.06);
+            --glass-border: rgba(0, 0, 0, 0.08);
             --border-light: rgba(0, 0, 0, 0.06);
             --btn-glass-bg: rgba(0, 0, 0, 0.04);
         }
@@ -55,13 +59,15 @@
         /* Reset & Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html { scroll-behavior: smooth; }
+        html, body {
+            overflow-x: hidden; /* Strict lock against horizontal scroll bugs */
+            scroll-behavior: smooth;
+        }
         
         body {
             font-family: var(--font-body);
             background-color: var(--bg-base);
             color: var(--text-main);
-            overflow-x: hidden;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             /* Buttery smooth theme transition */
@@ -73,24 +79,21 @@
         ::-webkit-scrollbar-track { background: var(--bg-surface); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 6px; }
 
-        /* Utilities */
-        .purple-dot { color: var(--secondary); }
-        
-        /* Max Glass Effect */
+        /* Max Glass Effect - Enhanced for maximum cinematic feel */
         .apple-glass {
             background: var(--glass-bg);
             backdrop-filter: blur(40px) saturate(200%);
             -webkit-backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255,255,255,0.02);
             transition: background-color var(--theme-transition), border-color var(--theme-transition), box-shadow var(--theme-transition), transform 0.4s var(--ease);
         }
         
         body.light-mode .apple-glass {
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.04);
+            box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255,255,255,0.4);
         }
 
-        /* Layout Structure - Fixed Black Edges */
+        /* Layout Structure */
         section { 
             width: 100%; 
             position: relative; 
@@ -101,6 +104,8 @@
             max-width: 1280px;
             margin: 0 auto;
             padding: 0 max(5%, 2rem);
+            position: relative;
+            z-index: 2;
         }
 
         h1, h2, h3, h4, .font-head { font-family: var(--font-head); color: var(--text-main); transition: color var(--theme-transition); }
@@ -132,6 +137,22 @@
             margin-bottom: 3rem;
         }
 
+        /* Animated Logo */
+        .brand-logo {
+            height: 18px;
+            width: auto;
+            vertical-align: baseline;
+            margin-left: 3px;
+            transform: translateY(2px);
+            animation: pulseGlow 3s infinite alternate ease-in-out;
+            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+        }
+
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.4)); transform: translateY(2px) scale(1); }
+            100% { filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.9)); transform: translateY(2px) scale(1.08); }
+        }
+
         /* Buttons */
         .btn {
             display: inline-flex;
@@ -157,7 +178,7 @@
         }
         
         .btn-primary:hover {
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.5);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.6);
             transform: translateY(-3px);
         }
 
@@ -169,9 +190,10 @@
         }
 
         .btn-glass:hover {
-            background: rgba(124, 58, 237, 0.1);
-            border-color: rgba(124, 58, 237, 0.4);
+            background: rgba(124, 58, 237, 0.15);
+            border-color: rgba(124, 58, 237, 0.5);
             transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
             color: var(--text-main);
         }
 
@@ -215,8 +237,10 @@
             border-bottom: 1px solid var(--border-light);
             border-top: none; border-left: none; border-right: none;
             border-radius: 0;
-            /* The appleglass class handles the background transition */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
+        
+        body.light-mode nav { box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
 
         .nav-inner {
             display: flex;
@@ -235,13 +259,11 @@
             color: var(--text-main);
             text-decoration: none;
             letter-spacing: -0.02em;
-        }
-
-        .nav-links {
             display: flex;
             align-items: center;
-            gap: 2.5rem;
         }
+
+        .nav-links { display: flex; align-items: center; gap: 2.5rem; }
 
         .nav-links a {
             color: var(--text-muted);
@@ -251,41 +273,25 @@
             transition: color 0.3s var(--ease);
         }
 
-        .nav-links a:hover, .nav-links a.active { color: var(--text-main); }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-main); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        body.light-mode .nav-links a:hover, body.light-mode .nav-links a.active { text-shadow: none; }
 
-        .nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
+        .nav-controls { display: flex; align-items: center; gap: 1.5rem; }
 
         .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.75rem; color: var(--text-muted);
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
         }
 
         .status-dot {
             width: 6px; height: 6px;
-            background-color: var(--success);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-            box-shadow: 0 0 10px var(--success);
+            background-color: var(--success); border-radius: 50%;
+            animation: pulse 2s infinite; box-shadow: 0 0 10px var(--success);
         }
 
         /* Premium Day/Night Slider */
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 54px;
-            height: 28px;
-        }
-        
+        .theme-switch { position: relative; display: inline-block; width: 54px; height: 28px; }
         .theme-switch input { opacity: 0; width: 0; height: 0; }
         
         .slider {
@@ -294,8 +300,7 @@
             background-color: rgba(255,255,255,0.05);
             border: 1px solid var(--glass-border);
             transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border-radius: 34px;
-            overflow: hidden;
+            border-radius: 34px; overflow: hidden;
         }
         
         .slider:before {
@@ -305,18 +310,13 @@
             background-color: var(--text-main);
             transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             border-radius: 50%;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 2;
         }
 
-        /* Sun/Moon Icons inside slider */
         .slider::after {
-            content: "☀️";
-            position: absolute;
+            content: "☀️"; position: absolute;
             right: 6px; top: 4px;
-            font-size: 12px;
-            opacity: 0.5;
-            transition: 0.3s;
+            font-size: 12px; opacity: 0.5; transition: 0.3s;
         }
         
         input:checked + .slider { background-color: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
@@ -326,70 +326,64 @@
         .hamburger { display: none; background: none; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; }
 
         /* SPA View Management */
-        .view {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.6s var(--ease);
-            padding-top: 108px;
-        }
+        .view { display: none; opacity: 0; transition: opacity 0.6s var(--ease); padding-top: 108px; }
         .view.active { display: block; opacity: 1; }
 
-        /* Ambient Blobs - Centered for psychological focus */
+        /* Ambient Blobs - Adding multiple for a magical feel */
         .ambient-blob {
             position: absolute;
             border-radius: 50%;
             filter: blur(140px);
-            background: rgba(124, 58, 237, 0.15);
             pointer-events: none;
             z-index: 0;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px; height: 800px;
             transition: background var(--theme-transition);
         }
         
-        body.light-mode .ambient-blob { background: rgba(124, 58, 237, 0.08); }
+        .blob-center {
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 800px; height: 800px;
+            background: rgba(124, 58, 237, 0.15);
+        }
+        .blob-right {
+            top: 20%; right: -10%;
+            width: 600px; height: 600px;
+            background: rgba(168, 85, 247, 0.12);
+        }
+        .blob-left {
+            bottom: 10%; left: -10%;
+            width: 700px; height: 700px;
+            background: rgba(124, 58, 237, 0.1);
+        }
+        
+        body.light-mode .blob-center { background: rgba(124, 58, 237, 0.08); }
+        body.light-mode .blob-right { background: rgba(168, 85, 247, 0.06); }
+        body.light-mode .blob-left { background: rgba(124, 58, 237, 0.05); }
 
         /* Cinematic Scroll Reveal Animation */
-        .reveal { 
-            opacity: 0; 
-            transform: translateY(40px) scale(0.98); 
-            transition: opacity 1s var(--ease), transform 1s var(--ease); 
-        }
+        .reveal { opacity: 0; transform: translateY(40px) scale(0.98); transition: opacity 1s var(--ease), transform 1s var(--ease); }
         .reveal.revealed { opacity: 1; transform: translateY(0) scale(1); }
 
         /* SVG Icons Styling */
         .prof-icon {
             width: 36px; height: 36px;
-            stroke: var(--primary);
-            stroke-width: 1.5;
-            fill: none;
+            stroke: var(--primary); stroke-width: 1.5; fill: none;
             margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 10px rgba(124,58,237,0.3));
         }
 
         /* --- HOME PAGE STYLES --- */
         
-        /* Centered Psychological Hero */
         .hero {
             position: relative;
             min-height: max(600px, calc(100vh - 108px));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 4rem;
-            padding-bottom: 8rem;
-            overflow: hidden;
-            background: var(--bg-base);
+            display: flex; align-items: center; justify-content: center;
+            padding-top: 4rem; padding-bottom: 8rem;
+            overflow: hidden; background: var(--bg-base);
         }
 
         .hero-content { 
-            position: relative; 
-            z-index: 2; 
-            max-width: 900px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+            position: relative; z-index: 2; max-width: 900px; 
+            display: flex; flex-direction: column; align-items: center; text-align: center;
         }
 
         .hero-label {
@@ -401,12 +395,12 @@
 
         .hero h1 {
             font-size: clamp(3.5rem, 9vw, 8rem);
-            font-weight: 900; 
-            line-height: 0.85; /* Tightly stacked per user request */
-            letter-spacing: -0.05em; 
-            margin-bottom: 2.5rem;
+            font-weight: 900; line-height: 0.85; 
+            letter-spacing: -0.05em; margin-bottom: 2.5rem;
             color: var(--text-main);
+            text-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
+        body.light-mode .hero h1 { text-shadow: none; }
 
         .hero p {
             font-size: clamp(1rem, 1.2vw, 1.25rem);
@@ -425,20 +419,16 @@
         .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--primary), transparent); }
         .scroll-text { font-size: 0.6rem; letter-spacing: 0.2em; writing-mode: vertical-rl; color: var(--text-main); font-weight: 600;}
 
-        /* Stats Bar - Fixed Grid Stacking */
+        /* Stats Bar */
         .stats-bar {
             background: var(--bg-surface);
             border-top: 1px solid var(--border-light);
             border-bottom: 1px solid var(--border-light);
             padding: 4rem 0;
+            position: relative; z-index: 2;
         }
 
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 2rem; 
-        }
-        
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
         .stat-item { position: relative; text-align: center; }
         .stat-item:not(:last-child)::after {
             content: ''; position: absolute;
@@ -449,41 +439,28 @@
         .stat-num { font-family: var(--font-head); font-weight: 900; font-size: clamp(2.5rem, 4vw, 3.5rem); color: var(--text-main); line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em;}
         .stat-label { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
 
-        /* Manifesto - Shortened & Made Smaller */
-        .manifesto { 
-            padding: 8rem 0;
-            text-align: center; 
-            background: var(--bg-base); 
-        }
+        /* Manifesto */
+        .manifesto { padding: 8rem 0; text-align: center; background: var(--bg-base); position: relative;}
         .manifesto-text {
-            max-width: 700px; /* Reduced width for shorter read */
-            margin: 0 auto;
+            max-width: 700px; margin: 0 auto;
             font-family: var(--font-head); font-weight: 700;
-            font-size: clamp(1.2rem, 2vw, 1.8rem); /* Made text smaller */
-            line-height: 1.5;
-            color: var(--text-muted);
-            letter-spacing: -0.01em;
+            font-size: clamp(1.2rem, 2vw, 1.8rem); line-height: 1.5;
+            color: var(--text-muted); letter-spacing: -0.01em;
+            position: relative; z-index: 2;
         }
         .manifesto-text strong { color: var(--text-main); font-weight: 800; }
 
-        /* Process Section - High Visibility Numbers */
-        .process-section { padding: 8rem 0; background: var(--bg-surface); }
-        .process-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; position: relative; margin-top: 5rem; }
+        /* Process Section */
+        .process-section { padding: 8rem 0; background: var(--bg-surface); position: relative; overflow: hidden;}
+        .process-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; position: relative; margin-top: 5rem; z-index: 2;}
         .process-line { position: absolute; top: 40px; left: 10%; right: 10%; height: 1px; border-top: 1px solid var(--border-light); z-index: 0; }
         
         .step { position: relative; z-index: 1; background: var(--bg-surface); padding: 0 1rem; }
         
         .step-num { 
-            font-family: var(--font-head); 
-            font-weight: 900; 
-            font-size: 5rem; 
-            /* Outlined stylish numbers for visibility */
-            color: transparent; 
-            -webkit-text-stroke: 2px var(--primary);
-            opacity: 0.6;
-            line-height: 1; 
-            margin-bottom: 1.5rem; 
-            letter-spacing: -0.05em; 
+            font-family: var(--font-head); font-weight: 900; font-size: 5rem; 
+            color: transparent; -webkit-text-stroke: 2px var(--primary); opacity: 0.6;
+            line-height: 1; margin-bottom: 1.5rem; letter-spacing: -0.05em; 
             transition: opacity 0.4s var(--theme-transition), -webkit-text-stroke var(--theme-transition);
         }
         body.light-mode .step-num { -webkit-text-stroke: 2px var(--primary); opacity: 0.3; }
@@ -491,40 +468,31 @@
         .step h3 { font-size: 1.3rem; margin-bottom: 1rem; letter-spacing: -0.02em;}
         .step p { color: var(--text-muted); font-weight: 400; font-size: 0.95rem; line-height: 1.6; }
 
-        /* Services Preview (What We Do) */
-        .services-preview { padding: 8rem 0; background: var(--bg-base); }
-        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 4rem;}
+        /* Services Preview (What We Do) - 2x2 Grid for 4 Items */
+        .services-preview { padding: 8rem 0; background: var(--bg-base); position: relative; overflow: hidden;}
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; margin-top: 4rem; position: relative; z-index: 2;}
         
         .service-card {
-            padding: 3rem;
-            border-radius: 16px;
-            display: flex; flex-direction: column;
-            position: relative;
-            /* Apple-glass handled by global class */
+            padding: 3rem; border-radius: 16px;
+            display: flex; flex-direction: column; position: relative;
         }
         
-        .service-card:hover:not(.disabled) { transform: translateY(-8px); border-color: rgba(124,58,237,0.4); }
+        .service-card:hover { transform: translateY(-8px); border-color: rgba(168,85,247,0.4); }
 
         .service-card h3 { font-size: 1.4rem; margin-bottom: 1rem; letter-spacing: -0.02em;}
         .service-card p { color: var(--text-muted); font-weight: 400; margin-bottom: 2.5rem; flex-grow: 1; line-height: 1.6; font-size: 0.95rem;}
         
-        .service-card.disabled { opacity: 0.4; cursor: not-allowed; border-style: dashed; }
-        .badge { position: absolute; top: 1.5rem; right: 1.5rem; background: var(--btn-glass-bg); padding: 6px 14px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-main); border: 1px solid var(--border-light);}
-
         /* Testimonials */
         .testimonials { padding: 8rem 0; background: var(--bg-surface); overflow: hidden; border-bottom: 1px solid var(--border-light); }
         .carousel-container { 
             display: flex; gap: 2rem; overflow-x: auto; 
-            padding: 2rem max(5%, 2rem); 
-            cursor: grab;
+            padding: 2rem max(5%, 2rem); cursor: grab;
         }
         .carousel-container:active { cursor: grabbing; }
         .carousel-container::-webkit-scrollbar { display: none; }
         
         .review-card {
-            min-width: 400px;
-            padding: 3rem;
-            border-radius: 16px;
+            min-width: 400px; padding: 3rem; border-radius: 16px;
             display: flex; flex-direction: column; justify-content: space-between;
         }
         
@@ -536,7 +504,7 @@
         .reviewer-info { color: var(--text-muted); font-weight: 500; font-size: 0.95rem;}
 
         /* Bottom CTA */
-        .bottom-cta { padding: 10rem 0; text-align: center; position: relative; background: var(--bg-base); }
+        .bottom-cta { padding: 10rem 0; text-align: center; position: relative; background: var(--bg-base); overflow: hidden; }
         .cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 60%); pointer-events: none; transition: background var(--theme-transition);}
         body.light-mode .cta-glow { background: radial-gradient(circle, rgba(124,58,237,0.05) 0%, transparent 60%); }
         .bottom-cta h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); margin-bottom: 1.5rem; position: relative; z-index: 1; letter-spacing: -0.03em;}
@@ -545,21 +513,14 @@
         .bottom-cta .small-note { display: block; margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); position: relative; z-index: 1; font-weight: 500;}
 
         /* --- PORTFOLIO PAGE STYLES --- */
-        .page-header { padding: 8rem 0 4rem 0; border-bottom: 1px solid var(--border-light); text-align: center; }
+        .page-header { padding: 8rem 0 4rem 0; border-bottom: 1px solid var(--border-light); text-align: center; position: relative; overflow: hidden;}
         
         .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; padding: 5rem 0; }
         
         .portrait-card {
-            position: relative;
-            aspect-ratio: 9/16;
-            max-height: 70vh;
-            margin: 0 auto;
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            filter: grayscale(100%) brightness(0.8);
-            transition: all 0.6s var(--ease);
-            cursor: pointer;
+            position: relative; aspect-ratio: 9/16; max-height: 70vh;
+            margin: 0 auto; width: 100%; border-radius: 16px; overflow: hidden;
+            filter: grayscale(100%) brightness(0.8); transition: all 0.6s var(--ease); cursor: pointer;
         }
         
         .portrait-card:hover { filter: grayscale(0%) brightness(1); transform: scale(1.02); z-index: 10; box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
@@ -577,8 +538,7 @@
             width: 64px; height: 64px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             z-index: 2; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease), opacity 0.4s;
-            opacity: 0;
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
+            opacity: 0; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2);
         }
         body.light-mode .portrait-card .play-btn { background: rgba(0,0,0,0.1); border-color: rgba(0,0,0,0.2); }
         .portrait-card .play-btn svg { width: 20px; height: 20px; fill: white; margin-left: 4px; }
@@ -590,8 +550,8 @@
         /* --- SERVICES PAGE STYLES --- */
         .gradient-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .service-page-section { padding: 8rem 0; border-bottom: 1px solid var(--border-light); }
-        .service-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; }
+        .service-page-section { padding: 8rem 0; border-bottom: 1px solid var(--border-light); position: relative; overflow: hidden; }
+        .service-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; position: relative; z-index: 2;}
         .service-info { position: sticky; top: 140px; }
         .service-info h2 { font-size: clamp(1.8rem, 2.5vw, 2.2rem); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 15px; letter-spacing: -0.02em;}
         .service-info p { color: var(--text-muted); font-size: 1rem; margin-bottom: 2.5rem; line-height: 1.7; }
@@ -611,7 +571,7 @@
         .price-val { font-family: var(--font-head); font-size: 3.5rem; font-weight: 900; color: var(--text-main); margin: 1.5rem 0; letter-spacing: -0.04em;}
         .price-list { list-style: none; margin-bottom: 2.5rem; }
         .price-list li { margin-bottom: 1rem; color: var(--text-muted); font-weight: 500; font-size: 0.95rem; display: flex; align-items: center; gap: 12px; }
-        .price-list li::before { content: '•'; color: var(--primary); font-weight: bold; font-size: 1.2rem; }
+        .price-list li::before { content: '•'; color: var(--primary); font-weight: bold; font-size: 1.2rem; filter: drop-shadow(0 0 5px var(--primary));}
         
         .pricing-card .btn { width: 100%; padding: 1.25rem; font-size: 0.9rem; }
         
@@ -630,14 +590,15 @@
         .faq-item.active .faq-answer { max-height: 500px; }
 
         /* --- CONTACT PAGE STYLES --- */
-        .contact-section { padding: 8rem 0; min-height: calc(100vh - 108px); display: flex; align-items: center; background: var(--bg-base); }
-        .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: center; width: 100%;}
+        .contact-section { padding: 8rem 0; min-height: calc(100vh - 108px); display: flex; align-items: center; background: var(--bg-base); position: relative; overflow: hidden;}
+        .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: center; width: 100%; position: relative; z-index: 2;}
         
         .contact-info h1 { font-size: clamp(3rem, 6vw, 6rem); line-height: 0.9; font-weight: 900; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: -0.05em;}
         .contact-info p { color: var(--text-muted); font-size: 1.15rem; margin-bottom: 3rem; }
         
         .email-link { font-size: clamp(1.2rem, 2vw, 1.5rem); color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 15px; margin-bottom: 2.5rem; font-weight: 800; transition: color 0.3s; letter-spacing: -0.02em;}
-        .email-link:hover { color: var(--secondary); }
+        .email-link:hover { color: var(--secondary); text-shadow: 0 0 15px rgba(168,85,247,0.5);}
+        body.light-mode .email-link:hover { text-shadow: none; }
         .email-link svg { fill: currentColor; width: 24px; height: 24px; }
         
         .urgency-note { color: var(--secondary); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em;}
@@ -679,20 +640,19 @@
         @media (max-width: 1024px) {
             .service-layout, .contact-layout { grid-template-columns: 1fr; gap: 4rem; }
             .service-info { position: static; }
-            /* Mobile Stats Grid - Fix for screenshot 2 */
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem 1rem; }
             .stat-item:nth-child(2)::after { display: none; }
             .process-steps { grid-template-columns: 1fr; gap: 3rem; }
             .process-line { display: none; }
             .footer-grid { grid-template-columns: 1fr; gap: 3rem; }
             .portrait-card { max-height: none; }
-            .services-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
             .nav-links, .hidden-mobile { display: none; }
             .hamburger { display: block; }
             .portfolio-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .services-grid { grid-template-columns: 1fr; } /* Stack 4 services on mobile */
             .stats-grid { grid-template-columns: 1fr; }
             .stat-item::after { display: none; }
             .manifesto { padding: 5rem 0; }
@@ -701,11 +661,11 @@
             .nav-controls { gap: 1rem; }
             .hero { text-align: center; padding-top: 2rem;}
             .hero-content { align-items: center; }
-            .hero h1 { font-size: clamp(3rem, 12vw, 5rem); } /* Keep it huge on mobile */
+            .hero h1 { font-size: clamp(3rem, 12vw, 5rem); }
         }
         
         /* Mobile Menu */
-        .mobile-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-surface); z-index: 998; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2.5rem; opacity: 0; pointer-events: none; transition: all 0.5s var(--ease); transform: translateY(-20px); }
+        .mobile-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--glass-bg); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); z-index: 998; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2.5rem; opacity: 0; pointer-events: none; transition: all 0.5s var(--ease); transform: translateY(-20px); }
         .mobile-menu.active { opacity: 1; pointer-events: all; transform: translateY(0); }
         .mobile-menu a { color: var(--text-main); font-family: var(--font-head); font-size: 2.5rem; font-weight: 900; text-decoration: none; transition: color 0.3s; letter-spacing: -0.04em;}
         .mobile-menu a:hover { color: var(--secondary); }
@@ -722,7 +682,9 @@
     <!-- Navigation -->
     <nav class="apple-glass" id="navbar">
         <div class="nav-inner">
-            <a href="#home" class="logo nav-trigger">Maxline Studios<span class="purple-dot">.</span></a>
+            <a href="#home" class="logo nav-trigger">
+                Maxline Studios<img src="favicon.png" alt="Logo" class="brand-logo">
+            </a>
             
             <div class="nav-links">
                 <a href="#home" class="nav-trigger active">Work</a>
@@ -764,7 +726,7 @@
             
             <!-- Hero -->
             <section class="hero">
-                <div class="ambient-blob"></div>
+                <div class="ambient-blob blob-center"></div>
                 
                 <div class="container hero-content reveal">
                     <div class="hero-label">
@@ -810,6 +772,7 @@
 
             <!-- Manifesto -->
             <section class="manifesto">
+                <div class="ambient-blob blob-right"></div>
                 <div class="container">
                     <p class="manifesto-text reveal">
                         Most agencies give you a video. <strong>We give you something your audience can't scroll past.</strong> We don't do templates. We engineer cinematic experiences. Your brand shouldn't feel like a startup — <strong>it should feel like an independent film studio.</strong>
@@ -846,12 +809,13 @@
                 </div>
             </section>
 
-            <!-- Services Preview -->
+            <!-- Services Preview (Now 4 Items - 2x2 Grid on PC) -->
             <section class="services-preview">
+                <div class="ambient-blob blob-left"></div>
                 <div class="container">
                     <div class="reveal text-center" style="text-align: center;">
                         <span class="section-label">WHAT WE DO</span>
-                        <h2 class="section-title">Three specialities.<br>One standard: exceptional.</h2>
+                        <h2 class="section-title">Four specialities.<br>One standard: exceptional.</h2>
                     </div>
                     
                     <div class="services-grid">
@@ -869,12 +833,19 @@
                             <p>Custom AI characters that post, sell, and convert — 24/7, no camera needed.</p>
                             <a href="#services" class="text-link nav-trigger" style="color: var(--secondary); font-weight: 800; text-decoration: none; font-size: 0.9rem;">Explore Service →</a>
                         </div>
-                        <div class="service-card apple-glass disabled reveal" style="transition-delay: 0.3s">
-                            <span class="badge">Coming Soon</span>
+                        <div class="service-card apple-glass reveal" style="transition-delay: 0.3s">
                             <!-- Web/Code Icon SVG -->
                             <svg class="prof-icon" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
                             <h3>Web Development</h3>
-                            <p>Bespoke digital experiences for high-ticket brands.</p>
+                            <p>Bespoke digital experiences for high-ticket brands. Fast, optimized, and built to convert.</p>
+                            <a href="#services" class="text-link nav-trigger" style="color: var(--secondary); font-weight: 800; text-decoration: none; font-size: 0.9rem;">Explore Service →</a>
+                        </div>
+                        <div class="service-card apple-glass reveal" style="transition-delay: 0.4s">
+                            <!-- Design Icon SVG -->
+                            <svg class="prof-icon" viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+                            <h3>Brand Identity & Design</h3>
+                            <p>Full visual identity, logo design, color schemes, and social media post architecture.</p>
+                            <a href="#services" class="text-link nav-trigger" style="color: var(--secondary); font-weight: 800; text-decoration: none; font-size: 0.9rem;">Explore Service →</a>
                         </div>
                     </div>
                 </div>
@@ -895,8 +866,8 @@
 
             <!-- Bottom CTA -->
             <section class="bottom-cta">
+                <div class="cta-glow"></div>
                 <div class="container">
-                    <div class="cta-glow"></div>
                     <h2 class="font-head reveal">Only 2 slots left this month.</h2>
                     <p class="reveal" style="transition-delay: 0.1s">We limit client intake intentionally — so every project gets our full focus. Don't wait.</p>
                     <div class="reveal" style="transition-delay: 0.2s">
@@ -911,6 +882,7 @@
         <!-- ================= PORTFOLIO VIEW ================= -->
         <div id="portfolio" class="view">
             <section class="page-header reveal">
+                <div class="ambient-blob blob-center"></div>
                 <div class="container">
                     <span class="section-label">SELECTED WORKS // 2026</span>
                     <h1 class="section-title">Work That Converts.</h1>
@@ -950,14 +922,15 @@
         <!-- ================= SERVICES VIEW ================= -->
         <div id="services" class="view">
             <section class="page-header reveal">
+                <div class="ambient-blob blob-center"></div>
                 <div class="container">
                     <span class="section-label">WHAT WE OFFER</span>
                     <h1 class="section-title">Elevate Your <span class="gradient-text">Visual Legacy.</span></h1>
-                    <p class="section-subtext" style="margin: 0 auto;">Three services. One standard: cinematic, intentional, and built to convert.</p>
+                    <p class="section-subtext" style="margin: 0 auto;">Four core services. One standard: cinematic, intentional, and built to convert.</p>
                 </div>
             </section>
 
-            <!-- Service 01 -->
+            <!-- Service 01: Video Editing -->
             <section class="service-page-section">
                 <div class="container service-layout">
                     <div class="service-info reveal">
@@ -1035,7 +1008,7 @@
                 </div>
             </section>
 
-            <!-- Service 02 -->
+            <!-- Service 02: AI Characters -->
             <section class="service-page-section">
                 <div class="container service-layout">
                     <div class="service-info reveal">
@@ -1075,16 +1048,82 @@
                 </div>
             </section>
             
-            <!-- Service 03 -->
-            <section class="service-page-section" style="opacity: 0.4; pointer-events: none; user-select: none;">
+            <!-- Service 03: Web Development (NEW) -->
+            <section class="service-page-section">
                 <div class="container service-layout">
                     <div class="service-info reveal">
                         <h2><svg class="prof-icon" style="margin-bottom:0;" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg> Web Development</h2>
-                        <p>Bespoke digital experiences for high-ticket brands.</p>
+                        <p>Bespoke digital experiences for high-ticket brands. Fast, responsive, and conversion-optimized websites built from scratch.</p>
+                        <div class="tags">
+                            <span class="tag">Mobile Optimized</span>
+                            <span class="tag">SEO Ready</span>
+                            <span class="tag">High Performance</span>
+                        </div>
                     </div>
-                    <div class="pricing-card apple-glass reveal" style="border-style: dashed; display: flex; align-items: center; justify-content: center; min-height: 200px;">
-                        <span class="badge" style="color: var(--text-main); border: 1px solid var(--border-light);">Coming Soon</span>
-                        <div style="font-family: var(--font-head); font-weight: 900; font-size: 1.5rem; color: var(--text-main);">Launching soon.</div>
+                    <div class="pricing-cards">
+                        <div class="pricing-card apple-glass reveal" style="transition-delay: 0.1s">
+                            <div style="color: var(--text-muted); font-weight: 600;">Single Page Website</div>
+                            <div class="price-val">$299</div>
+                            <ul class="price-list">
+                                <li>High-converting landing page</li>
+                                <li>Mobile & Tablet responsive</li>
+                                <li>Contact forms integration</li>
+                                <li style="color: var(--text-main);"><strong>+$100 Optional Domain/Hosting Setup</strong></li>
+                            </ul>
+                            <a href="#contact" class="btn btn-glass nav-trigger">Get Started</a>
+                        </div>
+                        
+                        <div class="pricing-card premium reveal" style="transition-delay: 0.2s">
+                            <div style="color: var(--text-muted); font-weight: 600;">Multipage Website</div>
+                            <div class="price-val">$999</div>
+                            <ul class="price-list">
+                                <li>Up to 5 Pages (Home, About, Services, etc.)</li>
+                                <li>Advanced UI/UX & Glassmorphism design</li>
+                                <li>Full CMS/Blog integration</li>
+                                <li>Premium animations & interactions</li>
+                            </ul>
+                            <a href="#contact" class="btn btn-primary nav-trigger" style="width: 100%;">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Service 04: Brand Identity (NEW) -->
+            <section class="service-page-section">
+                <div class="container service-layout">
+                    <div class="service-info reveal">
+                        <h2><svg class="prof-icon" style="margin-bottom:0;" viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg> Brand Identity & Design</h2>
+                        <p>Stand out with a cohesive visual identity. From logos to social media assets, we craft your brand's unique look.</p>
+                        <div class="tags">
+                            <span class="tag">Custom Logos</span>
+                            <span class="tag">Color Theory</span>
+                            <span class="tag">Social Media Kits</span>
+                        </div>
+                    </div>
+                    <div class="pricing-cards">
+                        <div class="pricing-card premium reveal" style="transition-delay: 0.1s">
+                            <div style="color: var(--text-muted); font-weight: 600;">Full Visual Identity</div>
+                            <div class="price-val">$199</div>
+                            <ul class="price-list">
+                                <li>Custom Logo Design (2 Concepts)</li>
+                                <li>Full Color Scheme Definition</li>
+                                <li>Typography Guidelines</li>
+                                <li>High-End Logo Mockup PDF</li>
+                            </ul>
+                            <a href="#contact" class="btn btn-primary nav-trigger" style="width: 100%;">Get Started</a>
+                        </div>
+
+                        <div class="pricing-card apple-glass reveal" style="transition-delay: 0.2s">
+                            <div style="color: var(--text-muted); font-weight: 600;">Social Media Assets</div>
+                            <div class="price-val">$99</div>
+                            <ul class="price-list">
+                                <li>Instagram/LinkedIn Post Designs</li>
+                                <li>Seamless Swipeable Carousels</li>
+                                <li>Profile Banners & Highlight Covers</li>
+                                <li>Cohesive Brand Integration</li>
+                            </ul>
+                            <a href="#contact" class="btn btn-glass nav-trigger">Get Started</a>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1108,6 +1147,7 @@
         <!-- ================= CONTACT VIEW ================= -->
         <div id="contact" class="view">
             <section class="contact-section">
+                <div class="ambient-blob blob-right"></div>
                 <div class="container contact-layout">
                     <div class="contact-info reveal">
                         <span class="section-label">GET IN TOUCH</span>
@@ -1159,7 +1199,9 @@
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <div class="logo" style="font-size: 1.2rem;">Maxline Studios<span class="purple-dot">.</span></div>
+                <div class="logo" style="font-size: 1.2rem;">
+                    Maxline Studios<img src="favicon.png" alt="Logo" class="brand-logo" style="height: 14px;">
+                </div>
                 <p style="margin-top: 15px;">Premium creative agency.</p>
                 <div class="copyright" style="margin-top: 15px;">© 2026 Maxline Studios. All rights reserved.</div>
             </div>
