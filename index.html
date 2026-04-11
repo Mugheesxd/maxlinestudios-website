@@ -82,8 +82,8 @@
         /* Max Apple Glass Effect */
         .apple-glass {
             background: var(--glass-bg);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
             border: 1px solid var(--glass-border);
             border-top: 1px solid var(--glass-border-top);
             border-left: 1px solid var(--glass-border-left);
@@ -118,8 +118,8 @@
 
         .btn-glass {
             background: var(--btn-glass-bg);
-            backdrop-filter: blur(25px) saturate(200%);
-            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            backdrop-filter: blur(12px) saturate(200%);
+            -webkit-backdrop-filter: blur(12px) saturate(200%);
             border: 1px solid var(--glass-border-left);
             border-top: 1px solid var(--glass-border-top);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
@@ -178,7 +178,7 @@
         body.light-mode .ambient-blob { background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 65%); }
 
         /* Cinematic Scroll Reveal Animation */
-        .reveal { opacity: 0; transform: translateY(40px) scale(0.98); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+        .reveal { opacity: 0; transform: translateY(40px) scale(0.98); transition: opacity 1s var(--ease), transform 1s var(--ease); will-change: opacity, transform; }
         .reveal.revealed { opacity: 1; transform: translateY(0) scale(1); }
 
         /* SVG Icons Styling */
@@ -382,9 +382,13 @@
             .contact-form { padding: 2rem 1.5rem; }
             .review-card { min-width: 320px; padding: 2.5rem; }
             .nav-controls { gap: 1rem; }
-            .hero { text-align: center; padding-top: 2rem;}
-            .hero-content { align-items: center; }
-            .hero h1 { font-size: clamp(3rem, 12vw, 5rem); }
+            .hero { text-align: center; padding-top: 3rem; min-height: auto; padding-bottom: 5rem;}
+            .hero-content { align-items: center; padding: 0 1rem; }
+            .hero h1 { font-size: clamp(2.8rem, 12vw, 4rem); line-height: 1.05; margin-bottom: 1.5rem; }
+            .hero p { font-size: 1rem; padding: 0; margin-bottom: 2.5rem; }
+            .hero-label { margin-bottom: 1.5rem; font-size: 0.65rem; }
+            .scarcity-banner { font-size: 9px; padding: 8px 5px; }
+            nav { top: 32px; }
         }
         
         /* Mobile Menu */
@@ -855,19 +859,19 @@
                 <div id="port-video" class="portfolio-gallery active reveal">
                     <div class="collage-grid">
                         <div class="collage-item apple-glass tall">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Real Estate Walkthrough</span></div>
                         </div>
                         <div class="collage-item apple-glass">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Talking Head / Coaching</span></div>
                         </div>
                         <div class="collage-item apple-glass">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Event Highlights</span></div>
                         </div>
                         <div class="collage-item apple-glass wide">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Corporate Production</span></div>
                         </div>
                     </div>
@@ -877,15 +881,15 @@
                 <div id="port-saas" class="portfolio-gallery reveal">
                     <div class="collage-grid">
                         <div class="collage-item apple-glass wide">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Software Dashboard Breakdown</span></div>
                         </div>
                         <div class="collage-item apple-glass tall">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Feature Highlighting</span></div>
                         </div>
                         <div class="collage-item apple-glass">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">UI/UX Animation</span></div>
                         </div>
                     </div>
@@ -895,15 +899,15 @@
                 <div id="port-color" class="portfolio-gallery reveal">
                     <div class="collage-grid">
                         <div class="collage-item apple-glass tall">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Cinematic Trailer Look</span></div>
                         </div>
                         <div class="collage-item apple-glass wide">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Product Showcase</span></div>
                         </div>
                         <div class="collage-item apple-glass">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay loop muted playsinline></video>
+                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
                             <div class="collage-overlay"><span class="collage-title">Real Estate Recolor</span></div>
                         </div>
                     </div>
@@ -1113,6 +1117,21 @@
                 reveals.forEach(r => observer.observe(r));
             }
             initScrollReveal();
+
+            // --- VIDEO PERFORMANCE OBSERVER ---
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.play().catch(e => { /* Ignored if browser blocks play */ });
+                    } else {
+                        entry.target.pause();
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('video').forEach(video => {
+                videoObserver.observe(video);
+            });
 
             // --- STATS COUNTER LOGIC ---
             const countUp = (el, target, suffix) => {
