@@ -84,7 +84,6 @@
         /* Reset & Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* Note: overflow-x: clip is used here instead of hidden to prevent breaking position: sticky */
         html { scroll-behavior: smooth; }
         
         body {
@@ -103,10 +102,9 @@
             background-color: var(--bg-base);
             overflow: hidden;
             pointer-events: none;
-            transform: translateZ(0); /* Force GPU acceleration */
+            transform: translateZ(0); 
         }
         
-        /* Floating Liquid Orbs (High Performance - No Blur Filters) */
         .mesh-orb {
             position: absolute;
             top: -20%; left: -10%;
@@ -171,7 +169,6 @@
             transition: all 0.3s var(--ease); border: none;
         }
 
-        /* Animated Live Gradient Button */
         .btn-primary { 
             background: linear-gradient(270deg, var(--primary), var(--secondary), var(--accent), var(--primary)); 
             background-size: 300% 300%;
@@ -183,7 +180,6 @@
         }
         .btn-primary:hover { box-shadow: 0 10px 30px rgba(139, 92, 246, 0.6); transform: translateY(-3px); }
 
-        /* Premium Glass Button */
         .btn-glass {
             background: var(--btn-glass-bg);
             backdrop-filter: blur(16px) saturate(200%);
@@ -329,8 +325,11 @@
         .stars { color: var(--accent); letter-spacing: 2px; margin-bottom: 1.5rem; font-size: 1.1rem; }
         .review-text { font-size: 1.05rem; font-weight: 400; color: var(--text-main); margin-bottom: 2.5rem; line-height: 1.7; }
         .reviewer { display: flex; align-items: center; gap: 1rem; }
-        .avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--btn-glass-bg); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--text-main); font-size: 0.9rem;}
-        .reviewer-info { color: var(--text-muted); font-weight: 500; font-size: 0.95rem;}
+        .avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--gradient); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--text-main); font-size: 1.4rem; text-transform: uppercase; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+        .reviewer-info { color: var(--text-muted); font-weight: 500; font-size: 0.95rem; display: flex; flex-direction: column;}
+        .reviewer-country { font-size: 0.85rem; opacity: 0.8; margin-top: 2px; display: flex; align-items: center; gap: 4px;}
+
+        .reviews-disclaimer { text-align: center; color: var(--text-muted); font-size: 0.8rem; opacity: 0.6; margin-top: 1rem; }
 
         /* Bottom CTA */
         .bottom-cta { padding: 10rem 0; text-align: center; position: relative; overflow: hidden; }
@@ -358,21 +357,88 @@
         .portfolio-gallery { display: none; opacity: 0; transition: opacity 0.4s var(--ease); padding-bottom: 6rem; position: relative; z-index: 2;}
         .portfolio-gallery.active { display: block; opacity: 1; }
 
-        /* Masonry Grid Setup */
-        .collage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); grid-auto-rows: 250px; gap: 1.5rem; padding-top: 4rem;}
-        .collage-item { position: relative; border-radius: 16px; overflow: hidden; transition: all 0.6s var(--ease); cursor: pointer; }
+        /* Masonry Grid Setup - DENSE FLOW FOR NO GAPS */
+        .collage-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            grid-auto-rows: 250px; 
+            gap: 1.5rem; 
+            padding-top: 4rem;
+            grid-auto-flow: dense; /* Fills all empty gaps perfectly */
+        }
+        
+        .collage-item { 
+            display: block; position: relative; border-radius: 16px; 
+            overflow: hidden; transition: all 0.6s var(--ease); cursor: pointer; 
+        }
         .collage-item.tall { grid-row: span 2; }
         .collage-item.wide { grid-column: span 2; }
         @media (max-width: 768px) { .collage-item.wide { grid-column: span 1; } }
         
-        .collage-item video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease);}
+        .collage-item img { 
+            width: 100%; height: 100%; object-fit: cover; object-position: center 20%; 
+            transition: transform 0.6s var(--ease), opacity 0.3s;
+            position: relative; z-index: 1; display: block;
+        }
+        
+        /* Fallback Background if Thumbnail from Drive is restricted */
+        .fallback-bg {
+            position: absolute; inset: 0; z-index: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(109, 40, 217, 0.1));
+        }
+
         .collage-item:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.4); z-index: 10; border-color: var(--secondary); }
+        .collage-item:hover img { transform: scale(1.05); }
         body.light-mode .collage-item:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         
-        .collage-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent 60%); display: flex; align-items: flex-end; padding: 1.5rem; pointer-events: none; transition: background var(--theme-transition); }
+        .collage-overlay { 
+            position: absolute; inset: 0; z-index: 2;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent 60%); 
+            display: flex; align-items: flex-end; padding: 1.5rem; pointer-events: none; transition: background var(--theme-transition); 
+        }
         body.light-mode .collage-overlay { background: linear-gradient(to top, rgba(255,255,255,0.9), transparent 60%); }
         .collage-title { font-family: var(--font-head); font-weight: 800; color: #FFFFFF; font-size: 1.15rem; transition: color var(--theme-transition); letter-spacing: -0.02em;}
         body.light-mode .collage-title { color: #000000; }
+
+        /* Play Icon Overlay for Image Cards */
+        .play-icon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60px; height: 60px; background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px); opacity: 0; transition: all 0.4s var(--ease);
+        }
+        .play-icon::after { content: ''; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 16px solid #fff; margin-left: 6px; }
+        .collage-item:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) scale(1.1); box-shadow: 0 0 20px rgba(124, 58, 237, 0.5); border-color: var(--accent); }
+        .collage-item:hover .play-icon::after { border-left-color: var(--accent); }
+
+        /* Cinematic Video Modal Player */
+        .video-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: rgba(3, 2, 5, 0.95);
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s var(--ease);
+        }
+        .video-modal.active { opacity: 1; pointer-events: all; }
+        .video-modal-content {
+            width: 90%; max-width: 1200px; height: 80vh;
+            background: #000; border-radius: 16px; overflow: hidden;
+            position: relative; transform: scale(0.95); transition: transform 0.4s var(--ease);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+        }
+        @media (max-width: 768px) {
+            .video-modal-content { height: 60vh; }
+        }
+        .video-modal.active .video-modal-content { transform: scale(1); }
+        .video-modal iframe { width: 100%; height: 100%; border: none; background: #000; }
+        .close-modal {
+            position: absolute; top: 20px; right: 30px;
+            color: #fff; font-size: 3rem; cursor: pointer;
+            font-family: sans-serif; line-height: 1; z-index: 10001;
+            transition: all 0.3s; opacity: 0.7;
+        }
+        .close-modal:hover { color: var(--accent); opacity: 1; transform: scale(1.1); }
 
         /* --- SERVICES PAGE STYLES --- */
         .gradient-text { 
@@ -434,17 +500,18 @@
 
         /* --- CONTACT PAGE STYLES --- */
         .contact-section { padding: 8rem 0; min-height: calc(100vh - 108px); display: flex; align-items: flex-start; position: relative; z-index: 2; }
-        .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: start; width: 100%;}
+        .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; width: 100%;}
         .contact-info { padding-top: 0; }
-        .contact-info h1 { font-size: clamp(3rem, 6vw, 6rem); line-height: 0.9; font-weight: 900; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: -0.05em;}
-        .contact-info p { color: var(--text-muted); font-size: 1.15rem; margin-bottom: 3rem; }
-        .email-link { font-size: clamp(1.2rem, 2vw, 1.5rem); color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem; font-weight: 800; transition: all 0.3s; letter-spacing: -0.02em;}
-        .email-link:hover { color: var(--accent); text-shadow: 0 0 15px rgba(139, 92, 246, 0.5); }
-        .email-link svg { fill: currentColor; width: 24px; height: 24px; }
-        .urgency-note { color: var(--accent); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2rem;}
+        .contact-info h1 { font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.9; font-weight: 900; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: -0.05em;}
+        .contact-info p { color: var(--text-muted); font-size: 1.15rem; margin-bottom: 2rem; }
+        .urgency-note { color: var(--accent); font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2.5rem;}
         
-        .contact-form { padding: 4rem; border-radius: 16px; transition: border-color 0.4s, box-shadow 0.4s; }
-        .contact-form:hover { border-color: var(--secondary); box-shadow: 0 15px 40px rgba(124, 58, 237, 0.2); }
+        /* High Conversion Direct Action Buttons */
+        .contact-action-buttons { display: flex; flex-direction: column; gap: 1.2rem; width: 100%; max-width: 450px; margin-bottom: 3rem;}
+        .contact-action-buttons .btn { font-size: 1.1rem; padding: 1.6rem; justify-content: center; width: 100%; letter-spacing: 0.05em;}
+        
+        .contact-form { padding: 4rem; border-radius: 16px; transition: border-color 0.4s, box-shadow 0.4s; opacity: 0.9; }
+        .contact-form:hover { opacity: 1; border-color: var(--secondary); box-shadow: 0 15px 40px rgba(124, 58, 237, 0.2); }
         
         .form-group { margin-bottom: 2.5rem; position: relative; }
         .form-control { width: 100%; background: none; border: none; border-bottom: 1px solid var(--border-light); padding: 12px 0; color: var(--text-main); font-family: var(--font-body); font-size: 1rem; font-weight: 500; transition: border-color 0.4s, color var(--theme-transition); }
@@ -475,12 +542,13 @@
         /* Responsive Breakpoints */
         @media (max-width: 1200px) {
             .service-layout { gap: 4rem; }
-            .contact-layout { gap: 4rem; }
+            .contact-layout { gap: 4rem; grid-template-columns: 1fr;}
+            .contact-info {text-align: center; display: flex; flex-direction: column; align-items: center;}
             .contact-form { padding: 3rem; }
         }
 
         @media (max-width: 1024px) {
-            .service-layout, .contact-layout { grid-template-columns: 1fr; gap: 4rem; }
+            .service-layout { grid-template-columns: 1fr; gap: 4rem; }
             .service-info { position: static; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem 1rem; }
             .stat-item:nth-child(2)::after { display: none; }
@@ -500,12 +568,13 @@
             .contact-form { padding: 2rem 1.5rem; }
             .review-card { min-width: 320px; padding: 2.5rem; }
             .nav-controls { gap: 1rem; }
+            .contact-action-buttons { flex-direction: column; width: 100%; gap: 1rem;}
             
             /* View Padding adjustment for mobile */
             .view { padding-top: 85px; }
             
-            /* Home Page Mobile Header Fixes */
-            .hero { text-align: center; padding-top: 0; min-height: 70vh; padding-bottom: 3rem; flex-direction: column; justify-content: center;}
+            /* Home Page Mobile Header Fixes - Reduced Gap */
+            .hero { text-align: center; padding-top: 2rem; min-height: 60vh; padding-bottom: 3rem; flex-direction: column; justify-content: center;}
             .hero-content { align-items: center; padding: 0 1rem; width: 100%;}
             .hero h1 { font-size: clamp(2.5rem, 12vw, 4rem); line-height: 1.1; margin-bottom: 1.2rem; word-wrap: break-word; }
             .hero p { font-size: 0.95rem; padding: 0 10px; margin-bottom: 2.5rem; }
@@ -537,7 +606,7 @@
 
     <!-- Scarcity Banner -->
     <div class="scarcity-banner">
-        <span class="pulse-icon">⚡</span> ONLY 2 CLIENT SLOTS REMAINING THIS MONTH — <a href="#contact" class="nav-trigger">SECURE YOURS →</a>
+        <span class="pulse-icon">⚡</span> ONLY 3 CLIENT SLOTS REMAINING THIS MONTH — <a href="#contact" class="nav-trigger">SECURE YOURS →</a>
     </div>
 
     <!-- Navigation -->
@@ -560,13 +629,6 @@
                     <span>Accepting clients</span>
                 </div>
                 <a href="#contact" class="btn btn-primary nav-trigger hidden-mobile" style="padding: 0.6rem 1.2rem; font-size: 0.7rem;">Book a Call</a>
-                
-                <!-- Day/Night Toggle -->
-                <label class="theme-switch" aria-label="Toggle Light/Dark Mode">
-                    <input type="checkbox" id="theme-toggle">
-                    <span class="slider"></span>
-                </label>
-                
                 <button class="hamburger">☰</button>
             </div>
         </div>
@@ -583,8 +645,9 @@
     <main id="app-root">
         
         <!-- ================= HOME VIEW ================= -->
-        <div id="home" class="view active">
+        <div id="home" class="view active" style="opacity: 1;">
             
+            <!-- Instant Load Hero (No Scroll Delay) -->
             <section class="hero">
                 <div class="container hero-content">
                     <div class="hero-label">
@@ -594,7 +657,7 @@
                     <h1>WE CUT THE<br>NOISE.</h1>
                     <p>Cinematic post-production and digital infrastructure for brands, creators, and professionals who refuse to blend in.</p>
                     <div class="hero-ctas">
-                        <a href="#contact" class="btn btn-primary nav-trigger">Start Your Project</a>
+                        <a href="#contact" class="btn btn-primary nav-trigger">Book Your Call</a>
                     </div>
                 </div>
             </section>
@@ -695,21 +758,22 @@
                 <div class="container reveal" style="margin-bottom: 2rem; text-align: center;">
                     <span class="section-label">CLIENT REVIEWS</span>
                     <h2 class="section-title">Trusted worldwide.</h2>
-                    <p class="section-subtext" style="margin-left: auto; margin-right: auto;">Every review below is real, unedited, from real clients.</p>
+                    <p class="section-subtext" style="margin-left: auto; margin-right: auto;">Real words from industry professionals.</p>
                 </div>
                 
                 <div class="carousel-container reveal" id="testimonial-carousel">
-                    <!-- Reviews injected by JS -->
+                    <!-- Extended Authentic Reviews injected by JS -->
                 </div>
+                <div class="reviews-disclaimer reveal">Reviews are curated from our freelancing platforms and independent agency work.</div>
             </section>
 
             <!-- Bottom CTA -->
             <section class="bottom-cta">
                 <div class="container">
-                    <h2 class="font-head reveal">Only 2 slots left this month.</h2>
+                    <h2 class="font-head reveal">Only 3 slots left this month.</h2>
                     <p class="reveal" style="transition-delay: 0.1s">We limit client intake intentionally — so every project gets our full focus. Don't wait.</p>
                     <div class="reveal bottom-cta-wrapper" style="transition-delay: 0.2s">
-                        <a href="#contact" class="btn btn-primary nav-trigger">Start Your Project</a>
+                        <a href="#contact" class="btn btn-primary nav-trigger">Book Your Call</a>
                         <span class="small-note" style="display: block; margin-top: 0.5rem;">Response within 24 hours. No commitment required to reach out.</span>
                     </div>
                 </div>
@@ -984,66 +1048,210 @@
             </section>
 
             <section class="container">
+                
                 <!-- VIDEO EDITING GALLERY -->
                 <div id="port-video" class="portfolio-gallery active reveal">
                     <div class="collage-grid">
-                        <div class="collage-item apple-glass tall">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Real Estate Walkthrough</span></div>
+                        
+                        <!-- Talking Head / Vertical (11 Tall Videos on Top) -->
+                        <div class="collage-item apple-glass tall" data-drive-id="10Fv1f35uM2rWwKy4YIEVbWN3ucUUhqJ6">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=10Fv1f35uM2rWwKy4YIEVbWN3ucUUhqJ6&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Educational Short</span></div>
                         </div>
-                        <div class="collage-item apple-glass">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Talking Head / Coaching</span></div>
+                        <div class="collage-item apple-glass tall" data-drive-id="10mCOtUuU25Ik68YgjF51G9Ks5JbaQmq3">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=10mCOtUuU25Ik68YgjF51G9Ks5JbaQmq3&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Viral Hook Story</span></div>
                         </div>
-                        <div class="collage-item apple-glass">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Event Highlights</span></div>
+                        <div class="collage-item apple-glass tall" data-drive-id="17FORTiVJwwmKk-nESIqBL0uPN1ILYLKP">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=17FORTiVJwwmKk-nESIqBL0uPN1ILYLKP&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Expert Coaching Reel</span></div>
                         </div>
-                        <div class="collage-item apple-glass wide">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Corporate Production</span></div>
+                        <div class="collage-item apple-glass tall" data-drive-id="1G271ysVUX0-Zx4kLI2RhYpM0VKjYhReD">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1G271ysVUX0-Zx4kLI2RhYpM0VKjYhReD&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Value Breakdown</span></div>
+                        </div>
+                        <div class="collage-item apple-glass tall" data-drive-id="1IDVGpgPozWkR4CuQvxKJ7UYOPvuY0Eew">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1IDVGpgPozWkR4CuQvxKJ7UYOPvuY0Eew&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Storytelling Clip</span></div>
+                        </div>
+                        <div class="collage-item apple-glass tall" data-drive-id="1RnKPrWkYFUs1HkMrjQGlYurt0-3y6zKe">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1RnKPrWkYFUs1HkMrjQGlYurt0-3y6zKe&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Creator Monologue</span></div>
+                        </div>
+                        <div class="collage-item apple-glass tall" data-drive-id="1SMISKtKSv4AMD9fFmIL3iiu_XMlcGQkA">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1SMISKtKSv4AMD9fFmIL3iiu_XMlcGQkA&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Motivational Reel</span></div>
+                        </div>
+                        <div class="collage-item apple-glass tall" data-drive-id="1Tp_lNt_PegDXoffWiCKE_qYltLgZA3dz">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1Tp_lNt_PegDXoffWiCKE_qYltLgZA3dz&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Fast Paced Delivery</span></div>
+                        </div>
+                        <div class="collage-item apple-glass tall" data-drive-id="1WvwOrDmZt9x14215_aW4zHtXYEExpBh3">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1WvwOrDmZt9x14215_aW4zHtXYEExpBh3&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Talking Head Video</span></div>
+                        </div>
+                        <div class="collage-item apple-glass tall" data-drive-id="1oH1EWqNZ1mOYv4JNDCE_b8KHiP2pnYru">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1oH1EWqNZ1mOYv4JNDCE_b8KHiP2pnYru&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Engagement Cut</span></div>
+                        </div>
+                        <div class="collage-item apple-glass tall" data-drive-id="1rveg5oAK3oxyotvTLBSRMkH0YuyY4sb3">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1rveg5oAK3oxyotvTLBSRMkH0YuyY4sb3&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Speaker Highlights</span></div>
+                        </div>
+
+                        <!-- General Video Editing (Wide and Standard) -->
+                        <div class="collage-item apple-glass wide" data-drive-id="1b6G63HD1EdK5FPvznowIfkByGRO3NVNp">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1b6G63HD1EdK5FPvznowIfkByGRO3NVNp&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Shoe Cleaner Ad</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1moALlUIEKeQi33MTfSOTlLLaxtevD2oM">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1moALlUIEKeQi33MTfSOTlLLaxtevD2oM&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Brand Story Edit</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1UK1K2BGS_IhE31IxAlzxfgj0TnsPim5Q">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1UK1K2BGS_IhE31IxAlzxfgj0TnsPim5Q&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Creative Narration</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1lK9LOGfrlObLX6tgkqaZCtEe-ApiOWyt">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1lK9LOGfrlObLX6tgkqaZCtEe-ApiOWyt&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Event Recap VLOG</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="138ogCQ7x9aAafoIHBOHYrNQ2-D_V-mqE">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=138ogCQ7x9aAafoIHBOHYrNQ2-D_V-mqE&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Corporate Highlights</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1juMXXntH0LRhEcGi7jY85_9deeCUFB3I">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1juMXXntH0LRhEcGi7jY85_9deeCUFB3I&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">House Before/After</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1txoclRk1TCHt87qO_MKLkZpreP99cZ69">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1txoclRk1TCHt87qO_MKLkZpreP99cZ69&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Commercial Teaser</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1bnLSDT6WK6tueHQ9qPDTeFgNSMbwojJl">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1bnLSDT6WK6tueHQ9qPDTeFgNSMbwojJl&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Podcast Clip</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="13hsub7WMpNvTMbqBV6s1kTAjU1CkUX7P">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=13hsub7WMpNvTMbqBV6s1kTAjU1CkUX7P&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Gym Video</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SAAS ANIMATION GALLERY -->
+                <!-- SAAS ANIMATION GALLERY (7 Videos) -->
                 <div id="port-saas" class="portfolio-gallery reveal">
                     <div class="collage-grid">
-                        <div class="collage-item apple-glass wide">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Software Dashboard Breakdown</span></div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1E0RpKFYkpDZjBX2qBJQKzZmQLahJGgZA">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1E0RpKFYkpDZjBX2qBJQKzZmQLahJGgZA&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Dashboard Overview</span></div>
                         </div>
-                        <div class="collage-item apple-glass tall">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Feature Highlighting</span></div>
+                        <div class="collage-item apple-glass" data-drive-id="1SbkW5GWcWDc6CuFdq2lVrA4s9MzCXOHm">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1SbkW5GWcWDc6CuFdq2lVrA4s9MzCXOHm&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">App UI Walkthrough</span></div>
                         </div>
-                        <div class="collage-item apple-glass">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">UI/UX Animation</span></div>
+                        <div class="collage-item apple-glass" data-drive-id="1iPX_zX4Y7LZtIBepLSDvlkk0mUEmq3zb">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1iPX_zX4Y7LZtIBepLSDvlkk0mUEmq3zb&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Motion Guidelines</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1C3KzCsmwAWkAeJBTY9qS1WHI8_5-p66k">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1C3KzCsmwAWkAeJBTY9qS1WHI8_5-p66k&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Platform Explainer</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1ejgkvXywkhj5SgIivQxyPyR9W6NAfUt1">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1ejgkvXywkhj5SgIivQxyPyR9W6NAfUt1&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Service Showcase</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1kk5hRyTgykDWxvYk7R6dK_gfI-EP3z5T">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1kk5hRyTgykDWxvYk7R6dK_gfI-EP3z5T&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Complex Data Visualization</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1eOZJrAjqY39MD0uHszwnjbSLyDKOXeSe">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1eOZJrAjqY39MD0uHszwnjbSLyDKOXeSe&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Product Tour</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- COLOR GRADING GALLERY -->
+                <!-- COLOR GRADING GALLERY (9 Videos) -->
                 <div id="port-color" class="portfolio-gallery reveal">
                     <div class="collage-grid">
-                        <div class="collage-item apple-glass tall">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Cinematic Trailer Look</span></div>
+                        <div class="collage-item apple-glass wide" data-drive-id="16uG0UzoTeJCepYvChbBcPvMBgPYFMAmc">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=16uG0UzoTeJCepYvChbBcPvMBgPYFMAmc&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Pool Color Matchup</span></div>
                         </div>
-                        <div class="collage-item apple-glass wide">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Product Showcase</span></div>
+                        <div class="collage-item apple-glass" data-drive-id="1AThQo0_1JPyKOTTnpXTAPWSp_vICJhQ6">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1AThQo0_1JPyKOTTnpXTAPWSp_vICJhQ6&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Underwater Video</span></div>
                         </div>
-                        <div class="collage-item apple-glass">
-                            <video src="https://www.w3schools.com/html/mov_bbb.mp4" loop muted playsinline></video>
-                            <div class="collage-overlay"><span class="collage-title">Real Estate Recolor</span></div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1MtTbjGlLwJESg4nNyGP1fy0TtTi4U5H8">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1MtTbjGlLwJESg4nNyGP1fy0TtTi4U5H8&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Grainy Color Grading</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1RBZeg94-1sZXySJzi0O2Lgk3jqc7c7a-">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1RBZeg94-1sZXySJzi0O2Lgk3jqc7c7a-&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Wedding Color Grading</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1T98QjxRJ5jRzrHxf0ldgiE828HFlYy_I">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1T98QjxRJ5jRzrHxf0ldgiE828HFlYy_I&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Night Shot Color Grading</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1ThO0JpIbeQZfhuyb0SFmOXwJFOO4t6uE">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1ThO0JpIbeQZfhuyb0SFmOXwJFOO4t6uE&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Skin Tone Balance</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1flZRWjZSj8aI1Ciz8VqT682OuN7JgXmg">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1flZRWjZSj8aI1Ciz8VqT682OuN7JgXmg&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Cinematic Stylization</span></div>
+                        </div>
+                        <div class="collage-item apple-glass" data-drive-id="1hugJ5TwA8D96GkV1F_9FcvG7nPPYgPjF">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1hugJ5TwA8D96GkV1F_9FcvG7nPPYgPjF&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Creative Grade</span></div>
+                        </div>
+                        <div class="collage-item apple-glass wide" data-drive-id="1isABbzram3_QVOZfkz4f5kqe8m9A3FKL">
+                            <div class="fallback-bg"></div>
+                            <img src="https://drive.google.com/thumbnail?id=1isABbzram3_QVOZfkz4f5kqe8m9A3FKL&sz=w1000" loading="lazy" onerror="this.style.opacity='0'">
+                            <div class="collage-overlay"><div class="play-icon"></div><span class="collage-title">Documentary Color Grading</span></div>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
-
 
         <!-- ================= CONTACT VIEW ================= -->
         <div id="contact" class="view">
@@ -1054,48 +1262,49 @@
                         <h1>LET'S TALK.</h1>
                         <p>Available worldwide. We respond within 24 hours.</p>
                         
-                        <a href="https://mail.google.com/mail/?view=cm&to=maxlinestudios@gmail.com" target="_blank" class="email-link">
-                            maxlinestudios@gmail.com
-                            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
-                        </a>
-                        
-                        <div class="urgency-note">⚡ Only 2 slots remaining this month.</div>
-                        
-                        <!-- Scheduling Integration -->
-                        <div style="margin-top: 2rem;">
-                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;">Or Schedule a Meeting</p>
-                            <a href="https://calendly.com/maxlinestudios/15min" target="_blank" class="btn btn-glass">
-                                <svg viewBox="0 0 24 24" width="20" height="20" style="margin-right: 10px; fill: currentColor;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg>
-                                Schedule a Call
+                        <!-- High Conversion Direct Action Buttons -->
+                        <div class="contact-action-buttons">
+                            <a href="https://calendly.com/" target="_blank" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1.8rem; font-size: 1.2rem; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);">
+                                Book a Call (Preferred)
+                            </a>
+                            <a href="mailto:maxlinestudios@gmail.com" target="_blank" class="btn btn-glass" style="width: 100%; justify-content: center; padding: 1.5rem; font-size: 1.1rem;">
+                                Email Us Directly
                             </a>
                         </div>
+                        
+                        <div class="urgency-note" style="margin-top: 1.5rem;">⚡ Only 3 slots remaining this month.</div>
                     </div>
                     
-                    <div class="contact-form apple-glass reveal" style="transition-delay: 0.2s">
-                        <form id="booking-form">
+                    <div class="contact-form apple-glass reveal" style="transition-delay: 0.2s; opacity: 0.8;">
+                        <!-- Direct FormSubmit Integration -->
+                        <form id="booking-form" action="https://formsubmit.co/maxlinestudios@gmail.com" method="POST">
+                            <!-- FormSubmit Config -->
+                            <input type="hidden" name="_subject" value="New Project Inquiry - Maxline Studios">
+                            <input type="hidden" name="_captcha" value="false">
+                            
+                            <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text-muted);">Or send a detailed project brief</h3>
                             <div class="form-group">
-                                <input type="text" id="name" class="form-control" placeholder="Full Name" required>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Full Name" required>
                             </div>
                             <div class="form-group">
-                                <input type="email" id="email" class="form-control" placeholder="Email Address" required>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Email Address" required>
                             </div>
                             <div class="form-group">
-                                <input type="text" id="today-date" class="form-control" readonly>
+                                <input type="text" name="date" id="today-date" class="form-control" readonly>
                             </div>
                             <div class="form-group">
-                                <select id="time" class="form-control" required>
-                                    <option value="" disabled selected>Preferred Time</option>
+                                <select name="time_preference" id="time" class="form-control" required>
+                                    <option value="" disabled selected>Preferred Contact Time</option>
                                     <option value="morning">Morning (9AM–12PM)</option>
                                     <option value="afternoon">Afternoon (1PM–5PM)</option>
                                     <option value="evening">Evening (6PM–9PM)</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <textarea id="brief" class="form-control" rows="4" placeholder="Tell us about your project..." required></textarea>
+                                <textarea name="message" id="brief" class="form-control" rows="4" placeholder="Tell us about your project..." required></textarea>
                             </div>
                             
-                            <button type="submit" class="btn btn-primary">SEND MESSAGE</button>
-                            <span class="form-footer-note">No spam, ever. We respond within 24 hours.</span>
+                            <button type="submit" class="btn btn-glass" style="width: 100%;">SEND MESSAGE</button>
                         </form>
                     </div>
                 </div>
@@ -1103,6 +1312,14 @@
         </div>
 
     </main>
+
+    <!-- Video Modal Popup (In-Website Playback) -->
+    <div id="video-modal" class="video-modal">
+        <div class="close-modal" id="close-modal">&times;</div>
+        <div class="video-modal-content">
+            <iframe id="modal-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -1139,22 +1356,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- THEME SWITCHER LOGIC ---
-            const themeToggle = document.getElementById('theme-toggle');
-            
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                document.body.classList.add('light-mode');
-                themeToggle.checked = true;
-            }
-
-            themeToggle.addEventListener('change', () => {
-                if (themeToggle.checked) {
-                    document.body.classList.add('light-mode');
-                } else {
-                    document.body.classList.remove('light-mode');
-                }
-            });
-
             // --- SPA ROUTING LOGIC ---
             const triggers = document.querySelectorAll('.nav-trigger');
             const views = document.querySelectorAll('.view');
@@ -1167,7 +1368,7 @@
                 
                 if(!targetView) return;
 
-                mobileMenu.classList.remove('active');
+                if (mobileMenu) mobileMenu.classList.remove('active');
                 
                 document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
                 const activeLink = document.querySelector(`.nav-links a[href="#${targetId}"]`);
@@ -1182,6 +1383,7 @@
 
                 setTimeout(() => {
                     targetView.style.display = 'block';
+                    // Trigger reflow for animations
                     void targetView.offsetWidth;
                     targetView.classList.add('active');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1203,9 +1405,11 @@
                 navigate(window.location.hash);
             });
 
-            hamburger.addEventListener('click', () => {
-                mobileMenu.classList.toggle('active');
-            });
+            if (hamburger && mobileMenu) {
+                hamburger.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('active');
+                });
+            }
 
             // --- PORTFOLIO TAB LOGIC ---
             const tabBtns = document.querySelectorAll('.tab-btn');
@@ -1216,18 +1420,20 @@
                     tabBtns.forEach(b => b.classList.remove('active'));
                     galleries.forEach(g => {
                         g.classList.remove('active');
-                        setTimeout(() => g.style.display = 'none', 400); // Wait for fade out
+                        setTimeout(() => g.style.display = 'none', 400); 
                     });
 
                     btn.classList.add('active');
                     const targetId = btn.getAttribute('data-target');
                     const targetGallery = document.getElementById(targetId);
                     
-                    setTimeout(() => {
-                        targetGallery.style.display = 'block';
-                        void targetGallery.offsetWidth;
-                        targetGallery.classList.add('active');
-                    }, 400);
+                    if (targetGallery) {
+                        setTimeout(() => {
+                            targetGallery.style.display = 'block';
+                            void targetGallery.offsetWidth;
+                            targetGallery.classList.add('active');
+                        }, 400);
+                    }
                 });
             });
 
@@ -1246,21 +1452,6 @@
                 reveals.forEach(r => observer.observe(r));
             }
             initScrollReveal();
-
-            // --- VIDEO PERFORMANCE OBSERVER ---
-            const videoObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.play().catch(e => { /* Ignored if browser blocks play */ });
-                    } else {
-                        entry.target.pause();
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            document.querySelectorAll('video').forEach(video => {
-                videoObserver.observe(video);
-            });
 
             // --- STATS COUNTER LOGIC ---
             const countUp = (el, target, suffix) => {
@@ -1292,64 +1483,97 @@
             
             document.querySelectorAll('.counter').forEach(c => statsObserver.observe(c));
 
-            // --- TESTIMONIALS CAROUSEL ---
+            // --- HIGH-QUALITY AUTHENTIC REVIEWS ---
             const reviews = [
-                { s: 5, t: "Amazing collaboration! Professional, fast, flexible. Everything I needed. Will come back.", n: "Q.", f: "🇨🇭" },
-                { s: 5, t: "Same-day delivery and stunning results. Exactly what I was looking for.", n: "T.", f: "🇵🇱" },
-                { s: 5, t: "Maxline Studios asked all the right questions upfront to get a strong sense of the project before starting.", n: "J.", f: "🇺🇸" },
-                { s: 5, t: "Everything was perfect the first time — no revisions needed. 12-hour turnaround.", n: "N.", f: "🇺🇸" },
-                { s: 5, t: "High-quality work that exceeded my expectations and met every requirement of the brief. Completed well ahead of schedule.", n: "P.", f: "🇳🇱" }
+                { s: 5, t: "They created a custom offer to help me with a long-form project. Maxline Studios was going to create 2 LUTs for use with my project, but ended up delivering 4 for the same price. Everything looked great the first time and needed no revisions. 12 hour turn around time was much appreciated.", n: "noahamarshall", f: "🇺🇸 United States" },
+                { s: 5, t: "Amazing collaboration! Professional, fast, flexible. Everything I needed. Thank you very much. I will come back to you!", n: "qualen23", f: "🇨🇭 Switzerland" },
+                { s: 5, t: "Asap delivery and stunning results which I looked for. Thank you so much!", n: "tytus_duchnow", f: "🇵🇱 Poland" },
+                { s: 5, t: "Maxline Studios did an excellent job asking questions ahead of time to get a good sense of the project.", n: "jamilawrites", f: "🇺🇸 United States" },
+                { s: 5, t: "They are very accurate and very very understanding and respectful of what was needed and they delivered exactly how I needed the project. Will use the service again for sure ... Thank you again.", n: "sportd111", f: "🇨🇦 Canada" },
+                { s: 5, t: "Working with Maxline Studios was an excellent experience. They delivered high-quality work that exceeded my expectations and met every requirement of the brief. Communication was professional and polite throughout the entire process, and the project was completed well ahead of schedule.", n: "photospher", f: "🇳🇱 Netherlands" },
+                { s: 5, t: "Usually when I try to find someone to help me with my projects I'm looking for someone who is a partner, with ideas, suggestions, friendly manner and good communication, but has a professional approach to the said topic. Maxline Studios is 100% that.", n: "spzhun", f: "🇭🇺 Hungary" },
+                { s: 5, t: "Working with Maxline Studios was a smooth and rewarding experience. From start to finish they were cooperative, responsive, and showed great attention to detail. I truly appreciated how open they were to feedback and how committed they were to delivering a polished final product.", n: "oninatasha", f: "🇧🇧 Barbados" },
+                { s: 5, t: "Maxline Studios is incredible, I love the outcome on my project, they brought my vision to life and did it under 24 hours with very quick responses. They will be getting a lot more work from me. Thanks Maxline Studios.", n: "mrecktv", f: "🇺🇸 United States" },
+                { s: 5, t: "It was nice working with you. You were super polite and understood the assignment immediately. You started working on the assignment and were done before I noticed (so quick). Thank you!", n: "tiji_na", f: "🇭🇷 Croatia" },
+                { s: 5, t: "Awesome work! It’s automatic. Trust this team. 💪🏾", n: "luviewines", f: "🇺🇸 United States" },
+                { s: 5, t: "Great product! Highly recommended their service for any video color correction services.", n: "candelabrum", f: "🇺🇸 United States" },
+                { s: 5, t: "Super friendly and helpful. Great communication and did exactly what I needed in a quick time frame. Will definitely be using again on next project.", n: "timfrawley", f: "🇦🇺 Australia" },
+                { s: 5, t: "What true artists. Before I even saw the video, they told me I’d love it—and they were absolutely right. It turned out amazing! I truly enjoy working with someone who takes pride in their craft. You delivered beyond my expectations.", n: "luviewines", f: "🇺🇸 United States" },
+                { s: 5, t: "Video editing requires great skill. I would recommend you stop viewing countless profiles and hire Maxline Studios for your project. This team will turn in high quality professional work that will surely suit your needs.", n: "aac729", f: "🇺🇸 United States" },
+                { s: 5, t: "Wonderful work. Thank you Maxline Studios. Great communication and result. I’ll be back.", n: "lunar79", f: "🇦🇺 Australia" },
+                { s: 5, t: "Was helping me all to resolve my concerns. Despite the given issues, they were willing to provide suggestions and different revisions. Would definitely recommend!", n: "gianpaolofonaci", f: "🇺🇸 United States" },
+                { s: 5, t: "This is what I call perfection! Maxline Studios brought life to my music video by enhancing its quality and colours. The overall feel is fresh with the right balance of corrections. I’m definitely working with them for all my video needs.", n: "samjaved80", f: "🇦🇺 Australia" },
+                { s: 5, t: "I’ve worked with this agency multiple times, and every experience has been fantastic! The edits are top-notch, delivered on time, and the turnaround is incredibly fast. Highly recommend!", n: "beastdony", f: "🇺🇸 United States" },
+                { s: 5, t: "Maxline Studios continues to deliver the kind of work one hopes for when they are hiring out a project. If you work with them you can expect outstanding results that will keep you coming back for more.", n: "aac729", f: "🇺🇸 United States" },
+                { s: 5, t: "They did a great job in a VERY short timeframe. Understood the problem I needed help with and assisted promptly. I would hire again for color correction on a video and would recommend them to others for their video needs.", n: "chandraprasad", f: "🇺🇸 United States" },
+                { s: 5, t: "To anyone currently looking to get some video editing done I would steer you towards Maxline Studios. They apply skill towards their edits, know what additional images and sound effects might enhance your product and will deliver it in a timely manner.", n: "aac729", f: "🇺🇸 United States" },
+                { s: 5, t: "I worked with Maxline Studios on 5 short videos as teasers for a bigger video. It took some back and forth to understand the brand, but once they understood the brand look and feel, the rest went much smoother and faster. It was a great experience working with them.", n: "libbyalpert317", f: "🇺🇸 United States" },
+                { s: 5, t: "Easy to work with and understood the scope of work. Went above and beyond with the delivery! Would recommend and will work with them again.", n: "olivyaslimes", f: "🇺🇸 United States" },
+                { s: 5, t: "I can't say enough good things about Maxline. The team delivers a quality product and does it in such a timely manner that it seems amazing to me. Highest recommendation.", n: "aac729", f: "🇺🇸 United States" },
+                { s: 5, t: "Amazing work! Very communicative and understood the vision we wanted. Will work with them again.", n: "olivyaslimes", f: "🇺🇸 United States" },
+                { s: 5, t: "There should be six stars for this team. Fantastic work on my project and in the timeliest manner as possible. You will come away completely happy and satisfied. Highest recommendation.", n: "aac729", f: "🇺🇸 United States" },
+                { s: 5, t: "Excellent professionals. Always available to solve video problems with attention to detail.", n: "mondografico", f: "🇮🇹 Italy" }
             ];
 
             const carousel = document.getElementById('testimonial-carousel');
-            reviews.forEach((r, i) => {
-                const card = document.createElement('div');
-                card.className = 'review-card apple-glass';
-                card.innerHTML = `
-                    <div>
-                        <div class="stars">${'⭐'.repeat(r.s)}</div>
-                        <p class="review-text">"${r.t}"</p>
-                    </div>
-                    <div class="reviewer">
-                        <div class="avatar">${r.n.charAt(0)}</div>
-                        <div class="reviewer-info">${r.n} ${r.f}</div>
-                    </div>
-                `;
-                carousel.appendChild(card);
-            });
+            if (carousel) {
+                // Duplicate array to create a seamless infinite loop
+                const allReviews = [...reviews, ...reviews];
+                allReviews.forEach((r) => {
+                    const card = document.createElement('div');
+                    card.className = 'review-card apple-glass';
+                    card.innerHTML = `
+                        <div>
+                            <div class="stars">${'⭐'.repeat(r.s)}</div>
+                            <p class="review-text">${r.t}</p>
+                        </div>
+                        <div class="reviewer">
+                            <div class="avatar">${r.n.charAt(0)}</div>
+                            <div class="reviewer-info">
+                                <span>${r.n}</span>
+                                <span class="reviewer-country">${r.f}</span>
+                            </div>
+                        </div>
+                    `;
+                    carousel.appendChild(card);
+                });
 
-            let isDown = false;
-            let startX, scrollLeft;
-            
-            carousel.addEventListener('mousedown', (e) => {
-                isDown = true;
-                carousel.style.cursor = 'grabbing';
-                startX = e.pageX - carousel.offsetLeft;
-                scrollLeft = carousel.scrollLeft;
-                clearInterval(scrollInterval);
-            });
-            carousel.addEventListener('mouseleave', () => { isDown = false; carousel.style.cursor = 'grab'; startScroll(); });
-            carousel.addEventListener('mouseup', () => { isDown = false; carousel.style.cursor = 'grab'; startScroll(); });
-            carousel.addEventListener('mousemove', (e) => {
-                if(!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - carousel.offsetLeft;
-                const walk = (x - startX) * 2.5;
-                carousel.scrollLeft = scrollLeft - walk;
-            });
-            
-            let scrollInterval;
-            const startScroll = () => {
-                clearInterval(scrollInterval);
-                scrollInterval = setInterval(() => {
-                    carousel.scrollBy({ left: 1, behavior: 'auto' });
-                    if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 1) { carousel.scrollLeft = 0; }
-                }, 25);
-            };
-            
-            carousel.addEventListener('touchstart', () => clearInterval(scrollInterval), {passive: true});
-            carousel.addEventListener('touchend', startScroll);
-            startScroll();
+                let isDown = false;
+                let startX, scrollLeft;
+                let scrollInterval;
+                
+                carousel.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    carousel.style.cursor = 'grabbing';
+                    startX = e.pageX - carousel.offsetLeft;
+                    scrollLeft = carousel.scrollLeft;
+                    clearInterval(scrollInterval);
+                });
+                carousel.addEventListener('mouseleave', () => { isDown = false; carousel.style.cursor = 'grab'; startScroll(); });
+                carousel.addEventListener('mouseup', () => { isDown = false; carousel.style.cursor = 'grab'; startScroll(); });
+                carousel.addEventListener('mousemove', (e) => {
+                    if(!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - carousel.offsetLeft;
+                    const walk = (x - startX) * 2.5;
+                    carousel.scrollLeft = scrollLeft - walk;
+                });
+                
+                const startScroll = () => {
+                    clearInterval(scrollInterval);
+                    scrollInterval = setInterval(() => {
+                        carousel.scrollLeft += 1;
+                        if (carousel.scrollLeft >= (carousel.scrollWidth / 2)) { 
+                            carousel.scrollLeft = 0; 
+                        }
+                    }, 30);
+                };
+                
+                // Touch events for smooth mobile swiping
+                carousel.addEventListener('touchstart', () => clearInterval(scrollInterval), {passive: true});
+                carousel.addEventListener('touchend', startScroll);
+                startScroll();
+            }
 
             // --- PRICING TOGGLES (SAAS SECTION) ---
             const btnSaas1m = document.getElementById('btn-saas-1m');
@@ -1431,22 +1655,45 @@
                 });
             }
 
+            // --- IN-WEBSITE VIDEO MODAL (GOOGLE DRIVE API) ---
+            const videoModal = document.getElementById('video-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const modalIframe = document.getElementById('modal-iframe');
+            
+            if (videoModal && closeModalBtn && modalIframe) {
+                const closeVideoModal = () => {
+                    videoModal.classList.remove('active');
+                    document.body.style.overflow = ''; 
+                    setTimeout(() => { 
+                        modalIframe.src = ''; 
+                    }, 400); 
+                };
+
+                closeModalBtn.addEventListener('click', closeVideoModal);
+                videoModal.addEventListener('click', (e) => {
+                    if (e.target === videoModal) closeVideoModal();
+                });
+
+                const collageItems = document.querySelectorAll('.collage-item');
+                collageItems.forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const driveId = item.getAttribute('data-drive-id');
+                        if (driveId) {
+                            // Native Google Drive preview link
+                            modalIframe.src = `https://drive.google.com/file/d/${driveId}/preview`;
+                            videoModal.classList.add('active');
+                            document.body.style.overflow = 'hidden'; 
+                        }
+                    });
+                });
+            }
+
             // --- FORM HANDLING ---
             const dateInput = document.getElementById('today-date');
             if(dateInput) {
                 const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                 dateInput.value = today;
-            }
-
-            const form = document.getElementById('booking-form');
-            if(form) {
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const name = document.getElementById('name').value;
-                    const brief = document.getElementById('brief').value;
-                    const url = `https://mail.google.com/mail/?view=cm&to=maxlinestudios@gmail.com&su=Project+Inquiry+-+${encodeURIComponent(name)}&body=${encodeURIComponent(brief)}`;
-                    window.open(url, '_blank');
-                });
             }
 
             if(window.location.hash) {
