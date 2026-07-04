@@ -12,7 +12,11 @@
 <link rel="canonical" href="https://maxlinestudios.me/">
 <!-- Security & privacy hardening -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="referrer" content="no-referrer">
+<!-- no-referrer keeps external image requests (Google Drive thumbnails)
+     from sending our domain in the Referer header — Drive's anti-hotlink
+     protection can silently block/throttle image requests once it detects
+     they're being embedded from an external site. -->
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; default-src 'self' https:; img-src 'self' https: data:; style-src 'self' https: 'unsafe-inline'; script-src 'self' https: 'unsafe-inline'; frame-src https://drive.google.com https://calendly.com; connect-src 'self' https:; font-src 'self' https: data:;">
 <meta name="robots" content="index, follow">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -214,7 +218,7 @@ section{padding:100px 0;position:relative;}
   background:linear-gradient(135deg,var(--primary),var(--primary-dark));
   color:#fff;padding:10px 24px;border-radius:30px;
   font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;
-  z-index:5;backdrop-filter:blur(10px);white-space:nowrap;
+  z-index:5;white-space:nowrap;
   box-shadow:0 8px 20px rgba(255,30,30,0.5);border:1px solid rgba(255,255,255,0.2);
   opacity:0;transition:opacity 0.5s ease 0.4s;
   pointer-events:none;
@@ -441,9 +445,9 @@ section{padding:100px 0;position:relative;}
 .collage-overlay{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.15) 45%,transparent 70%);display:flex;align-items:flex-end;padding:1.25rem;opacity:1;transition:all 0.4s var(--ease);}
 .collage-title{font-family:'Manrope',sans-serif;font-weight:800;color:#fff;font-size:14px;line-height:1.3;text-shadow:0 2px 8px rgba(0,0,0,0.4);}
 
-.play-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);width:52px;height:52px;background:rgba(255,255,255,0.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0.95;transition:all 0.35s var(--ease);z-index:3;}
+.play-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);width:52px;height:52px;background:rgba(30,30,30,0.5);border:1.5px solid rgba(255,255,255,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0.95;transition:all 0.35s var(--ease);z-index:3;}
 .play-icon svg{width:18px;height:18px;fill:#fff;margin-left:2px;transition:fill 0.3s;}
-.collage-item:hover .play-icon{opacity:1;transform:translate(-50%,-50%) scale(1.12);border-color:var(--primary-light);background:rgba(255,255,255,0.28);}
+.collage-item:hover .play-icon{opacity:1;transform:translate(-50%,-50%) scale(1.12);border-color:var(--primary-light);background:rgba(20,20,20,0.7);}
 .collage-item:hover .play-icon svg{fill:var(--primary);}
 
 /* Skeleton shimmer shown while the real thumbnail is still loading */
@@ -716,21 +720,21 @@ footer{background:var(--text-main);color:#fff;padding:80px 0 30px;margin-top:80p
               <div class="card-img-wrap">
                 <div class="video-stack-title">Video Editing</div>
                 <div class="video-stack-overlay"></div>
-                <img id="vs-img-0" src="" alt="Video editing sample">
+                <img id="vs-img-0" src="" alt="Video editing sample" referrerpolicy="no-referrer">
               </div>
             </div>
             <div class="video-stack-card" data-pos="1" data-cat="saas" onclick="openStackVideo(this)">
               <div class="card-img-wrap">
                 <div class="video-stack-title">SaaS Animations</div>
                 <div class="video-stack-overlay"></div>
-                <img id="vs-img-1" src="" alt="SaaS animation sample">
+                <img id="vs-img-1" src="" alt="SaaS animation sample" referrerpolicy="no-referrer">
               </div>
             </div>
             <div class="video-stack-card" data-pos="2" data-cat="color" onclick="openStackVideo(this)">
               <div class="card-img-wrap">
                 <div class="video-stack-title">Color Grading</div>
                 <div class="video-stack-overlay"></div>
-                <img id="vs-img-2" src="" alt="Color grading sample">
+                <img id="vs-img-2" src="" alt="Color grading sample" referrerpolicy="no-referrer">
               </div>
             </div>
           </div>
@@ -753,6 +757,18 @@ footer{background:var(--text-main);color:#fff;padding:80px 0 30px;margin-top:80p
           <div class="stat-item reveal" style="transition-delay: 0.15s"><div class="stat-num counter" data-target="1" data-suffix="M+">0</div><div class="stat-label">Views Generated</div></div>
           <div class="stat-item reveal" style="transition-delay: 0.2s"><div class="stat-num counter" data-target="7" data-suffix=" Days">0</div><div class="stat-label">Average Delivery</div></div>
         </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services-section">
+      <div class="container">
+        <div class="reveal" style="text-align: center; margin-bottom: 60px;">
+          <span class="section-label">What We Do</span>
+          <h2 class="section-title">End-to-end creative services.<br>One studio, infinite scale.</h2>
+          <p class="section-subtext" style="margin: 0 auto;">From cinematic post-production to full-stack design and development — we handle it all under one roof.</p>
+        </div>
+        <div class="services-grid" id="servicesGrid"></div>
       </div>
     </section>
 
@@ -816,18 +832,6 @@ footer{background:var(--text-main);color:#fff;padding:80px 0 30px;margin-top:80p
             <p>Every package includes two revision rounds.</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- SERVICES -->
-    <section class="services-section">
-      <div class="container">
-        <div class="reveal" style="text-align: center; margin-bottom: 60px;">
-          <span class="section-label">What We Do</span>
-          <h2 class="section-title">End-to-end creative services.<br>One studio, infinite scale.</h2>
-          <p class="section-subtext" style="margin: 0 auto;">From cinematic post-production to full-stack design and development — we handle it all under one roof.</p>
-        </div>
-        <div class="services-grid" id="servicesGrid"></div>
       </div>
     </section>
 
@@ -1274,11 +1278,19 @@ window.addEventListener('load', () => {
 const scrollProgress = document.getElementById('scroll-progress');
 const navbar = document.getElementById('navbar');
 const backToTop = document.getElementById('back-to-top');
-window.addEventListener('scroll', () => {
+let scrollTicking = false;
+function handleScrollFrame() {
   const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
   scrollProgress.style.width = scrolled + '%';
   navbar.classList.toggle('scrolled', window.scrollY > 30);
   backToTop.classList.toggle('visible', window.scrollY > 400);
+  scrollTicking = false;
+}
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    requestAnimationFrame(handleScrollFrame);
+    scrollTicking = true;
+  }
 }, { passive: true });
 
 function navigate(pageId) {
@@ -1459,9 +1471,13 @@ function updateStackCard(position, category, index) {
   if (img) {
     const id = videoIds[category][index];
     img.classList.remove('loaded');
+    let attempt = 0;
     img.onload = () => img.classList.add('loaded');
-    img.onerror = () => { img.classList.remove('loaded'); };
-    img.src = `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+    img.onerror = () => {
+      if (attempt < 2) { attempt++; img.src = driveThumbSrc(id, attempt); }
+      else { img.classList.remove('loaded'); }
+    };
+    img.src = driveThumbSrc(id, 0);
   }
 }
 
@@ -1480,7 +1496,13 @@ function updateStackOnScroll() {
     stackSplitActive = false;
   }
 }
-window.addEventListener('scroll', updateStackOnScroll, { passive: true });
+let stackScrollTicking = false;
+window.addEventListener('scroll', () => {
+  if (!stackScrollTicking) {
+    requestAnimationFrame(() => { updateStackOnScroll(); stackScrollTicking = false; });
+    stackScrollTicking = true;
+  }
+}, { passive: true });
 
 function openStackVideo(card) {
   const img = card.querySelector('img');
@@ -1606,19 +1628,89 @@ const allColor = [
   { id: '1isABbzram3_QVOZfkz4f5kqe8m9A3FKL', title: 'Documentary Color' }
 ];
 
+// Three different Google-hosted URL formats for the same Drive file.
+// Different Drive accounts/sharing configs respond reliably to different
+// formats, so we cascade through them before giving up on a thumbnail.
+function driveThumbSrc(id, attempt) {
+  if (attempt === 0) return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+  if (attempt === 1) return `https://lh3.googleusercontent.com/d/${id}=w800`;
+  return `https://drive.google.com/uc?export=view&id=${id}`;
+}
+
+// Only a handful of thumbnail requests fire at once — hitting Google with
+// 30-60 simultaneous requests is what was causing both the "blank thumbnail"
+// problem (rate-limited/rejected requests) and page jank (all decoding work
+// happening in one burst). A small queue keeps things smooth and reliable.
+const thumbQueue = [];
+let activeThumbLoads = 0;
+const MAX_CONCURRENT_THUMBS = 4;
+
+function queueThumbLoad(img) {
+  thumbQueue.push(img);
+  pumpThumbQueue();
+}
+function pumpThumbQueue() {
+  while (activeThumbLoads < MAX_CONCURRENT_THUMBS && thumbQueue.length) {
+    const img = thumbQueue.shift();
+    activeThumbLoads++;
+    img.src = driveThumbSrc(img.dataset.driveId, 0);
+  }
+}
+function onThumbSettled() {
+  activeThumbLoads = Math.max(0, activeThumbLoads - 1);
+  pumpThumbQueue();
+}
+
+function handleThumbError(img) {
+  const attempt = parseInt(img.dataset.attempt || '0', 10);
+  const id = img.dataset.driveId;
+  if (attempt < 2) {
+    img.dataset.attempt = String(attempt + 1);
+    img.src = driveThumbSrc(id, attempt + 1);
+  } else {
+    // All 3 formats failed — remove image, branded fallback stays visible
+    img.remove();
+    onThumbSettled();
+  }
+}
+function handleThumbLoad(img) {
+  img.classList.add('loaded');
+  onThumbSettled();
+}
+
+// Real lazy-loading via IntersectionObserver — unlike the native
+// loading="lazy" attribute, this works correctly inside CSS column-count
+// masonry layouts and lets us control concurrency.
+let thumbObserver = null;
+function getThumbObserver() {
+  if (thumbObserver) return thumbObserver;
+  thumbObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        obs.unobserve(img);
+        queueThumbLoad(img);
+      }
+    });
+  }, { rootMargin: '400px 0px' });
+  return thumbObserver;
+}
+
 function renderGallery(containerId, items) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  container.innerHTML = items.map(item => `
+  container.innerHTML = items.map((item, i) => `
     <div class="collage-item" onclick="openVideoModal('${item.id}')">
       <div class="thumb-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
-      <img src="https://drive.google.com/thumbnail?id=${item.id}&sz=w800" loading="lazy" alt="${item.title}" onload="this.classList.add('loaded')" onerror="this.remove();">
+      <img id="gal-${containerId}-${i}" data-drive-id="${item.id}" data-attempt="0" alt="${item.title}" referrerpolicy="no-referrer" onload="handleThumbLoad(this)" onerror="handleThumbError(this)">
       <div class="collage-overlay">
         <div class="play-icon"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
         <span class="collage-title">${item.title}</span>
       </div>
     </div>
   `).join('');
+  const observer = getThumbObserver();
+  container.querySelectorAll('img[data-drive-id]').forEach(img => observer.observe(img));
 }
 
 const allReviews = [
@@ -1740,7 +1832,7 @@ const faqsHome = [
   { q: "Do you work with clients internationally?", a: "Yes. Our clients are spread across the US, UK, UAE, Australia, and Europe. We handle international payments and work comfortably across all time zones." },
   { q: "What's included in a revision round?", a: "Every package includes 2 rounds of revisions covering pacing, color, transitions, and minor creative adjustments. Major scope changes are quoted separately." },
   { q: "Can I request a custom package?", a: "Yes. Share your project details through our Contact page and we'll put together a tailored offer within 24 hours — no commitment required." },
-  { q: "What payment methods do you accept?", a: "We accept secure international payments and also take orders through our verified Fiverr profile for milestone-protected transactions." },
+  { q: "What payment methods do you accept?", a: "We currently accept international payments via <a href=\"https://www.remitly.com\" target=\"_blank\" rel=\"noopener noreferrer\">Remitly</a>. We also take orders through our verified Fiverr profile for milestone-protected transactions." },
 ];
 
 const faqsWork = [
