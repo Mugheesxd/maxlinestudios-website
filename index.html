@@ -6,8 +6,6 @@
 <title>Maxline Studios — Premium Creative & IT Agency</title>
 <meta name="description" content="Cinematic post-production, web development, design, and digital infrastructure for brands worldwide.">
 <link rel="icon" href="favicon.png" type="image/png">
-<link rel="shortcut icon" href="favicon.png" type="image/png">
-<link rel="apple-touch-icon" href="favicon.png">
 <meta property="og:title" content="Maxline Studios — Premium Creative & IT Agency">
 <meta property="og:description" content="Cinematic post-production, web development, design, and digital infrastructure for brands worldwide.">
 <meta property="og:type" content="website">
@@ -22,6 +20,9 @@
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; default-src 'self' https:; img-src 'self' https: data:; style-src 'self' https: 'unsafe-inline'; script-src 'self' https: 'unsafe-inline'; frame-src https://drive.google.com https://calendly.com; connect-src 'self' https:; font-src 'self' https: data:;">
 <meta name="robots" content="index, follow">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Calendly official popup widget — powers the in-page "Book a Call" overlay -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" defer></script>
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -497,6 +498,15 @@ section{padding:100px 0;position:relative;}
 }
 .close-modal{position:absolute;top:24px;right:32px;color:#fff;font-size:36px;cursor:pointer;line-height:1;z-index:10001;transition:all 0.3s var(--ease);opacity:0.7;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);font-family:sans-serif;font-weight:300;}
 .close-modal:hover{color:#fff;opacity:1;transform:rotate(90deg) scale(1.1);background:rgba(255,255,255,0.25);}
+.modal-loader{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#000;z-index:2;opacity:1;transition:opacity 0.3s var(--ease);pointer-events:none;}
+.modal-loader.hidden{opacity:0;}
+.modal-spinner{width:42px;height:42px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:var(--primary);animation:modalspin 0.8s linear infinite;}
+@keyframes modalspin{to{transform:rotate(360deg);}}
+@media(max-width:768px){
+  .video-modal{padding:0;}
+  .video-modal-content{max-width:100vw !important;max-height:100vh !important;border-radius:0;}
+  .close-modal{top:14px;right:14px;width:40px;height:40px;font-size:26px;}
+}
 
 /* Contact page ============ */
 .contact-page-hero{padding:60px 0 30px;text-align:center;background:linear-gradient(180deg,rgba(255,30,30,0.04),transparent);}
@@ -1213,8 +1223,9 @@ footer{background:var(--text-main);color:#fff;padding:80px 0 30px;margin-top:80p
   <!-- VIDEO MODAL — proper aspect ratio, full screen fit -->
   <div id="video-modal" class="video-modal">
     <div class="close-modal" id="close-modal" onclick="closeVideoModal()">&times;</div>
-    <div class="video-modal-content">
-      <iframe id="modal-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <div class="video-modal-content" id="video-modal-content">
+      <div class="modal-loader" id="modal-loader"><div class="modal-spinner"></div></div>
+      <iframe id="modal-iframe" src="" allow="autoplay; fullscreen" allowfullscreen onload="hideModalLoader()"></iframe>
     </div>
   </div>
 
@@ -1310,8 +1321,16 @@ function navigate(pageId) {
   }
 }
 
+const CALENDLY_URL = 'https://calendly.com/maxlinestudios/15min';
 function openCalendly() {
-  window.open('https://calendly.com/your-handle/15min', '_blank', 'noopener,noreferrer');
+  // Prefer Calendly's official popup widget for a smooth in-page overlay.
+  // Falls back to opening a new tab if the widget script hasn't loaded yet
+  // (slow connection, ad-blocker, etc.) so the button never feels broken.
+  if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
+    Calendly.initPopupWidget({ url: CALENDLY_URL + '?hide_gdpr_banner=1' });
+  } else {
+    window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer');
+  }
 }
 
 function switchWorkTab(tab) {
@@ -1474,7 +1493,10 @@ function updateStackCard(position, category, index) {
     const id = videoIds[category][index];
     img.classList.remove('loaded');
     let attempt = 0;
-    img.onload = () => img.classList.add('loaded');
+    img.onload = () => {
+      img.classList.add('loaded');
+      if (img.naturalWidth && img.naturalHeight) img.dataset.ratio = (img.naturalWidth / img.naturalHeight).toFixed(4);
+    };
     img.onerror = () => {
       if (attempt < 2) { attempt++; img.src = driveThumbSrc(id, attempt); }
       else { img.classList.remove('loaded'); }
@@ -1510,7 +1532,7 @@ function openStackVideo(card) {
   const img = card.querySelector('img');
   if (img && img.src) {
     const match = img.src.match(/id=([^&]+)/);
-    if (match) openVideoModal(match[1]);
+    if (match) openVideoModal(match[1], img);
   }
 }
 
@@ -1634,9 +1656,9 @@ const allColor = [
 // Different Drive accounts/sharing configs respond reliably to different
 // formats, so we cascade through them before giving up on a thumbnail.
 function driveThumbSrc(id, attempt) {
-  if (attempt === 0) return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
-  if (attempt === 1) return `https://lh3.googleusercontent.com/d/${id}=w800`;
-  return `https://drive.google.com/uc?export=view&id=${id}`;
+  if (attempt === 0) return `https://lh3.googleusercontent.com/d/${id}=w800`;
+  if (attempt === 1) return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;
+  return `https://drive.google.com/thumbnail?id=${id}&sz=w400`;
 }
 
 // Only a handful of thumbnail requests fire at once — hitting Google with
@@ -1677,6 +1699,10 @@ function handleThumbError(img) {
 }
 function handleThumbLoad(img) {
   img.classList.add('loaded');
+  if (img.naturalWidth && img.naturalHeight) {
+    const card = img.closest('.collage-item');
+    if (card) card.dataset.ratio = (img.naturalWidth / img.naturalHeight).toFixed(4);
+  }
   onThumbSettled();
 }
 
@@ -1702,7 +1728,7 @@ function renderGallery(containerId, items) {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = items.map((item, i) => `
-    <div class="collage-item" onclick="openVideoModal('${item.id}')">
+    <div class="collage-item" onclick="openVideoModal('${item.id}', this)">
       <div class="thumb-fallback"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
       <img id="gal-${containerId}-${i}" data-drive-id="${item.id}" data-attempt="0" alt="${item.title}" referrerpolicy="no-referrer" onload="handleThumbLoad(this)" onerror="handleThumbError(this)">
       <div class="collage-overlay">
@@ -1799,13 +1825,33 @@ function initReviews() {
 // ============ VIDEO MODAL — Proper full-screen fit ============
 const videoModal = document.getElementById('video-modal');
 const modalIframe = document.getElementById('modal-iframe');
+const videoModalContent = document.getElementById('video-modal-content');
 
-function openVideoModal(driveId) {
+function openVideoModal(driveId, cardEl) {
   if (!driveId) return;
+  const loader = document.getElementById('modal-loader');
+  if (loader) loader.classList.remove('hidden');
+
+  // Size the box to match the real clip — vertical Shorts/Reels get a tall
+  // narrow box instead of being crushed into a wide 16:9 frame with huge
+  // black bars on either side.
+  const ratio = cardEl && cardEl.dataset.ratio ? parseFloat(cardEl.dataset.ratio) : null;
+  if (ratio && ratio < 0.95) {
+    videoModalContent.style.aspectRatio = ratio;
+    videoModalContent.style.maxWidth = Math.round(Math.min(440, window.innerWidth * 0.9)) + 'px';
+  } else {
+    videoModalContent.style.aspectRatio = ratio || (16 / 9);
+    videoModalContent.style.maxWidth = '1200px';
+  }
+
   // Use the Drive preview URL with zoom-fit parameters
   modalIframe.src = `https://drive.google.com/file/d/${driveId}/preview`;
   videoModal.classList.add('active');
   document.body.style.overflow = 'hidden';
+}
+function hideModalLoader() {
+  const loader = document.getElementById('modal-loader');
+  if (loader) loader.classList.add('hidden');
 }
 function closeVideoModal() {
   videoModal.classList.remove('active');
